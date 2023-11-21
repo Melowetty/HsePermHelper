@@ -48,3 +48,11 @@ tasks.bootBuildImage {
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
+
+tasks.jar {
+	archiveFileName.set("eureka-server.jar")
+}
+
+tasks.bootJar {
+	archiveFileName.set("eureka-server-standalone.jar")
+}

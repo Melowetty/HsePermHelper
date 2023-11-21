@@ -54,3 +54,11 @@ tasks.bootBuildImage {
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
+
+tasks.jar {
+	archiveFileName.set("users-service.jar")
+}
+
+tasks.bootJar {
+	archiveFileName.set("users-service-standalone.jar")
+}
