@@ -17,4 +17,4 @@ ENV APP_HOME=/home/gradle/project
 WORKDIR $APP_HOME
 COPY --from=TEMP_BUILD_IMAGE $APP_HOME/build/libs/$ARTIFACT_NAME .
 
-ENTRYPOINT ["java", "-jar", "$ARTIFACTNAME"]
+ENTRYPOINT ["java", "-jar", "api-gateway-standalone.jar"]

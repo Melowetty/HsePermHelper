@@ -47,8 +47,6 @@ tasks.bootBuildImage {
 	builder.set("paketobuildpacks/builder-jammy-base:latest")
 }
 
-tasks.register("prepareKotlinBuildScriptModel"){}
-
 tasks.jar {
 	archiveFileName.set("eureka-server.jar")
 }
