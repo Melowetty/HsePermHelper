@@ -7,9 +7,12 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./build:/home/gradle/project/build
+    ports:
+      - $EUREKA_PORT:$EUREKA_DOCKER_PORT
     env_file: ./.env
     environment:
       - SPRING_PROFILES_ACTIVE=$ACTIVE_PROFILE
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=$EUREKA_DEFAULT_ZONE
     restart: always
 
   api-gateway:
@@ -17,8 +20,8 @@ services:
     depends_on:
       - eureka-server
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./api-gateway/Dockerfile
     volumes:
       - ./build:/home/gradle/project/build
     ports:
@@ -27,16 +30,17 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=$ACTIVE_PROFILE
       - APP_SECURITY_PRIVATE-KEY=$PRIVATE_KEY
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=$EUREKA_DEFAULT_ZONE
     restart: always
 
   users-service:
     image: melowetty/users-service-perm-helper
     depends_on:
       - eureka-server
-     # - postgresdb-users-service
+      # - postgresdb-users-service
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./users-service/Dockerfile
     volumes:
       - ./build:/home/gradle/project/build
     env_file: ./.env
@@ -47,6 +51,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - APP_SECURITY_PRIVATE-KEY=$PRIVATE_KEY
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=$EUREKA_DEFAULT_ZONE
     restart: always
 
 #  postgresdb-users-service:

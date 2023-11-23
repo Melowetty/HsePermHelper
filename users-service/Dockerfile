@@ -1,10 +1,12 @@
 FROM gradle:8.4.0-jdk17-alpine AS TEMP_BUILD_IMAGE
 
-#build container
+# build container
 WORKDIR /home/gradle/project
 
-COPY build.gradle.kts .
-COPY src ./src
+COPY users-service/build.gradle.kts .
+COPY users-service/src ./src
+COPY settings.gradle.kts .
+COPY shared ./shared
 
 RUN gradle clean build --no-daemon -x test
 
