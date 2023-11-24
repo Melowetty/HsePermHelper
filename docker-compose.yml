@@ -11,7 +11,7 @@ services:
       - $EUREKA_PORT:$EUREKA_DOCKER_PORT
     env_file: ./.env
     environment:
-      - SPRING_PROFILES_ACTIVE=$ACTIVE_PROFILE
+      - SPRING_PROFILES_ACTIVE=$EUREKA_SERVER_ACTIVE_PROFILE
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=$EUREKA_DEFAULT_ZONE
     restart: always
 
@@ -20,16 +20,17 @@ services:
     depends_on:
       - eureka-server
     build:
-      context: ./
-      dockerfile: ./api-gateway/Dockerfile
+      context: ./api-gateway
+      dockerfile: Dockerfile
     volumes:
       - ./build:/home/gradle/project/build
     ports:
       - $GATEWAY_PORT:$GATEWAY_DOCKER_PORT
     env_file: ./.env
     environment:
-      - SPRING_PROFILES_ACTIVE=$ACTIVE_PROFILE
-      - APP_SECURITY_PRIVATE-KEY=$PRIVATE_KEY
+      - SPRING_PROFILES_ACTIVE=$API_GATEWAY_ACTIVE_PROFILE
+      - APP_SECURITY_PRIVATE-KEY=$TELEGRAM_BOT_PRIVATE_KEY
+      - APP_SECURITY_PRIVATE-KEY-HEADER=$TELEGRAM_BOT_PRIVATE_KEY_HEADER
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=$EUREKA_DEFAULT_ZONE
     restart: always
 
