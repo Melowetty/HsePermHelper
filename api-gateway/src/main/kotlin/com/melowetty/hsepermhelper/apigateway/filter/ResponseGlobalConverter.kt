@@ -49,7 +49,7 @@ class BodyRewrite : RewriteFunction<ByteArray?, ByteArray?> {
             return Mono.just(originalBody.toByteArray())
         }
         val originalBodyAsJson = jacksonObjectMapper().readValue<Any>(originalBody)
-        val response = Response(originalBodyAsJson, false)
+        val response = Response(originalBodyAsJson, exchange.response.statusCode?.is2xxSuccessful?.not() ?: false)
         val jsonByteArray = jacksonObjectMapper().writeValueAsString(response).toByteArray()
         return Mono.just(jsonByteArray)
     }

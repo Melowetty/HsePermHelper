@@ -1,11 +1,13 @@
 package com.melowetty.hsepermhelper.apigateway.filter
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.cloud.gateway.filter.GatewayFilter
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
@@ -30,7 +32,7 @@ class TelegramBotAuth(
                 || telegramBotUserAgent.isBlank()
                 || userAgent.first().contains("/").not()
                 || userAgent.first().split("/").first().trim() != telegramBotUserAgent) {
-                return@GatewayFilter onError(exchange, "Forbidden!", HttpStatus.FORBIDDEN)
+                return@GatewayFilter onError(exchange, "Доступ запрещен!", HttpStatus.FORBIDDEN)
             }
             val privateKeyFromHeader = exchange.request.headers.getOrEmpty(privateKeyHeader)
             if (privateKeyFromHeader.isEmpty()) {
@@ -48,7 +50,10 @@ class TelegramBotAuth(
     fun onError(exchange: ServerWebExchange, error: String, httpStatus: HttpStatus): Mono<Void> {
         val newResponse = exchange.response
         newResponse.setStatusCode(httpStatus)
-        val bytes = error.toByteArray()
+        newResponse.headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+        val responseBody = mutableMapOf<String, Any>()
+        responseBody["message"] = error
+        val bytes = jacksonObjectMapper().writeValueAsBytes(responseBody)
         val buffer = exchange.response.bufferFactory().wrap(bytes)
         return newResponse.writeWith(Mono.just(buffer))
     }
