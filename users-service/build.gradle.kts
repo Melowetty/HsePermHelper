@@ -5,6 +5,9 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.3"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
+	kotlin("plugin.allopen") version "1.6.21"
+	kotlin("plugin.noarg") version "1.6.21"
+	kotlin("plugin.jpa") version "1.6.21"
 }
 
 group = "com.melowetty.hsepermhelper"
@@ -28,6 +31,12 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// [Database]
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.postgresql:postgresql:42.6.0")
+	// [Open API]
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+	runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.7.0")
 }
 
 dependencyManagement {
