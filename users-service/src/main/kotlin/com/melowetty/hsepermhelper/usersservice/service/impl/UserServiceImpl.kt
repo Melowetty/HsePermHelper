@@ -17,8 +17,6 @@ class UserServiceImpl(
 
     override fun getUsers(): List<UserDto> {
         return userRepository.findAll().toList().map {
-            println(it.id)
-            println(it.telegramId)
             mapper.toDto(it)
         }
     }
