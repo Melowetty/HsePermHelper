@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.kafka:spring-kafka-test")
+    implementation("org.jsoup:jsoup:1.16.1")
 }
 
 dependencyManagement {

@@ -39,3 +39,6 @@ bin/
 .DS_Store
 .env
 .jpb/jpb-settings.xml
+
+### Schedule files ###
+/schedules
