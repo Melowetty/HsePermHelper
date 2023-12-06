@@ -6,7 +6,7 @@ import java.util.*
 data class ScheduleFile(
     val bytes: ByteArray,
     val extension: String,
-    val uuid: UUID = UUID.randomUUID(),
+    val uuid: UUID,
     val hashcode: String = FileUtils.getHash(bytes),
 ) : Comparable<ScheduleFile> {
     override fun compareTo(other: ScheduleFile): Int {

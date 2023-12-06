@@ -72,11 +72,13 @@ class ScheduleFileRepositoryImpl(
             val inputStream = downloadSchedulesAsInputStream(path = link)
             if (inputStream != null) {
                 val fileExtension = link.split('.').last()
-                files.add(ScheduleFile(inputStream.readAllBytes(), fileExtension))
+                files.add(ScheduleFile(inputStream.readAllBytes(), fileExtension, UUID.randomUUID()))
             }
         }
         checkChanges(files)
-        schedules = files
+        schedules = files.map { scheduleFile ->
+            schedules.find { it == scheduleFile } ?: scheduleFile
+        }.toSortedSet()
     }
 
     private fun checkChanges(files: SortedSet<ScheduleFile>) {
