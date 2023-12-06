@@ -1,14 +1,13 @@
 package com.melowetty.hsepermhelper.schedulefilesservice.model
 
 import com.melowetty.hsepermhelper.schedulefilesservice.utils.FileUtils
-import java.io.InputStream
 import java.util.*
 
 data class ScheduleFile(
-    val inputStream: InputStream,
+    val bytes: ByteArray,
     val extension: String,
     val uuid: UUID = UUID.randomUUID(),
-    val hashcode: String = FileUtils.getHash(inputStream),
+    val hashcode: String = FileUtils.getHash(bytes),
 ) : Comparable<ScheduleFile> {
     override fun compareTo(other: ScheduleFile): Int {
         return hashcode.compareTo(other.hashcode)

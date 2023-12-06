@@ -46,7 +46,7 @@ class ScheduleFileRepositoryImpl(
                 val inputStream = ByteArrayInputStream(it.inputStream().readAllBytes())
                 try {
                     val uuid = it.fileName.toString().split("_")[1].split(".")[0]
-                    schedules.add(ScheduleFile(inputStream, it.fileName.extension, UUID.fromString(uuid)))
+                    schedules.add(ScheduleFile(inputStream.readAllBytes(), it.fileName.extension, UUID.fromString(uuid)))
                 } catch (_: Exception) {}
             }
         }
@@ -72,7 +72,7 @@ class ScheduleFileRepositoryImpl(
             val inputStream = downloadSchedulesAsInputStream(path = link)
             if (inputStream != null) {
                 val fileExtension = link.split('.').last()
-                files.add(ScheduleFile(inputStream, fileExtension))
+                files.add(ScheduleFile(inputStream.readAllBytes(), fileExtension))
             }
         }
         checkChanges(files)
@@ -116,7 +116,7 @@ class ScheduleFileRepositoryImpl(
         clearAllScheduleFiles()
         files.forEach {
             try {
-                Files.copy(it.inputStream, scheduleFilesPath.resolve("schedule_${it.uuid}.${it.extension}"), StandardCopyOption.REPLACE_EXISTING)
+                Files.copy(ByteArrayInputStream(it.bytes), scheduleFilesPath.resolve("schedule_${it.uuid}.${it.extension}"), StandardCopyOption.REPLACE_EXISTING)
             } catch (e: Exception) {
                 e.printStackTrace()
                 println("Произошла ошибка при создании файлов расписания!")
