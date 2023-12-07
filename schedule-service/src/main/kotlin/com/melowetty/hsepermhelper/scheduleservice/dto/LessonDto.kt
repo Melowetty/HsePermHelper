@@ -8,7 +8,6 @@ import com.melowetty.hsepermhelper.scheduleservice.model.ScheduleType
 import com.melowetty.hsepermhelper.scheduleservice.utils.DateUtils
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Schema(description = "Учебная пара")
 data class LessonDto(
@@ -39,4 +38,9 @@ data class LessonDto(
     val lessonType: LessonType,
     @Schema(description = "Тип расписания-родителя", example = "COMMON_WEEK_SCHEDULE")
     val parentScheduleType: ScheduleType,
-)
+): Comparable<LessonDto> {
+    override fun compareTo(other: LessonDto): Int {
+        return date.compareTo(other.date)
+    }
+
+}
