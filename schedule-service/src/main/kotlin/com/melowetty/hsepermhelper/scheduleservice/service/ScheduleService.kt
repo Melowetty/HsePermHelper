@@ -5,4 +5,5 @@ import com.melowetty.hsepermhelper.scheduleservice.model.Language
 
 interface ScheduleService {
     fun findAllSchedules(lang: Language): List<ScheduleDto>
+    fun mockInputStream(base64: String)
 }
