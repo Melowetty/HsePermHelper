@@ -14,24 +14,24 @@ class LessonRuMapper(
     private val lessonPlaceMapper: LessonPlaceMapper,
 ): LessonMapper {
     override fun toEntity(lesson: LessonDto): Lesson {
+        val programme = Programme(
+            id = null,
+            name = lesson.programme,
+            translatedName = null,
+            course = lesson.course
+        )
         return Lesson(
             id = null,
             subject = Subject(
-                id = null,
                 name = lesson.subject,
                 translatedName = null,
-                course = lesson.course,
-                group = Group(
-                    id = null,
-                    programme = Programme(
-                        id = null,
-                        name = lesson.programme,
-                        translatedName = null,
-                        course = lesson.course
-                    ),
-                    displayName = lesson.group,
-                    translatedDisplayName = null,
-                )
+                programme = programme,
+            ),
+            group = Group(
+                id = null,
+                programme = programme,
+                displayName = lesson.group,
+                translatedDisplayName = null,
             ),
             subGroup = lesson.subGroup,
             date = lesson.date,
@@ -39,6 +39,8 @@ class LessonRuMapper(
             endTime = LocalTime.parse(lesson.endTimeStr, DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN)),
             lecturer = lesson.lecturer,
             places = lesson.places?.map { lessonPlaceMapper.toEntity(it) },
+            links = lesson.links,
+            additionalInfo = lesson.additionalInfo,
             lessonType = lesson.lessonType,
         )
     }
@@ -46,9 +48,9 @@ class LessonRuMapper(
     override fun toDto(scheduleType: ScheduleType, lesson: Lesson): LessonDto {
         return LessonDto(
             subject = lesson.subject.name,
-            course = lesson.subject.course,
-            programme = lesson.subject.group.programme.name,
-            group = lesson.subject.group.displayName,
+            course = lesson.subject.programme.course,
+            programme = lesson.subject.programme.name,
+            group = lesson.group.displayName,
             subGroup = lesson.subGroup,
             date = lesson.date,
             startTimeStr = lesson.startTime.format(DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN)),

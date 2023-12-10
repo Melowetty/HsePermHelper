@@ -1,18 +1,19 @@
 package com.melowetty.hsepermhelper.scheduleservice.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToMany
+import jakarta.persistence.*
 import java.time.LocalDate
 import java.util.*
 
 @Entity
 data class Schedule(
     @Id
-    val uuid: UUID,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    val id: Long? = null,
+    @Column(name = "system_id", unique = true, nullable = false)
+    val systemId: UUID ,
     val weekNumber: Int?,
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "schedule_id")
     val lessons: List<Lesson>,
     val weekStart: LocalDate,

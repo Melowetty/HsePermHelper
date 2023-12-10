@@ -16,7 +16,7 @@ data class LessonDto(
     @JsonIgnore val course: Int,
     @JsonIgnore val programme: String,
     @JsonIgnore val group: String,
-    @JsonIgnore val subGroup: Int?,
+    val subGroup: Int?,
     @JsonFormat(pattern = DateUtils.DATE_PATTERN)
     @Schema(description = "Дата пары", example = "03.09.2023", type = "string")
     val date: LocalDate,

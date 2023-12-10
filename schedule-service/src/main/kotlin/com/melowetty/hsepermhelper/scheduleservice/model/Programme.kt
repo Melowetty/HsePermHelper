@@ -11,7 +11,7 @@ import jakarta.persistence.*
 )
 data class Programme(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     val id: Long?,
     val name: String,
