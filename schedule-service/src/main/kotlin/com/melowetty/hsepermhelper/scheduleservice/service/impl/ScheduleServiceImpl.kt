@@ -30,20 +30,21 @@ class ScheduleServiceImpl(
     private val englishLessonMapper: LessonMapper,
 ): ScheduleService {
     override fun findAllSchedules(lang: Language): List<ScheduleDto> {
-        val lessonModelMapper: LessonMapper = when(lang) {
-            Language.RUSSIAN -> {
-                russianLessonMapper
-            }
-
-            Language.ENGLISH -> {
-                englishLessonMapper
-            }
-        }
-        return scheduleRepository.findAll().map { ScheduleMapper(lessonModelMapper).toDto(it) }
+        return scheduleRepository.findAll().map { getScheduleMapperByLanguage(lang).toDto(it) }
     }
 
     override fun getSchedulesByGroupId(groupId: Long, lang: Language): List<ScheduleDto> {
-        val lessonModelMapper: LessonMapper = when(lang) {
+        val schedules = scheduleRepository.getSchedulesByGroupId(groupId)
+        return schedules.map { getScheduleMapperByLanguage(lang).toDto(it) }
+    }
+
+    override fun getSchedulesByProgrammeId(programmeId: Long, lang: Language): List<ScheduleDto> {
+        val schedules = scheduleRepository.getSchedulesByProgrammeId(programmeId)
+        return schedules.map { getScheduleMapperByLanguage(lang).toDto(it) }
+    }
+
+    private fun getScheduleMapperByLanguage(language: Language): ScheduleMapper {
+        val lessonModelMapper: LessonMapper = when(language) {
             Language.RUSSIAN -> {
                 russianLessonMapper
             }
@@ -52,8 +53,7 @@ class ScheduleServiceImpl(
                 englishLessonMapper
             }
         }
-        val schedules = scheduleRepository.getSchedulesByGroupId(groupId)
-        return schedules.map { ScheduleMapper(lessonModelMapper).toDto(it) }
+        return ScheduleMapper(lessonModelMapper)
     }
 
     @Transactional
