@@ -40,12 +40,6 @@ class UsersController(
         @RequestBody userDto: UserDto,
     ): ResponseEntity<Any> {
         val result = userService.createUser(userDto)
-        if(userDto.settings.group.isBlank() || userDto.settings.subGroup < 0) {
-            return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mapOf(Pair("message", "Неверно указана группа или подгруппа!")))
-        }
         val status = if (result) HttpStatus.CREATED else HttpStatus.CONFLICT
         return ResponseEntity.status(status).build()
     }

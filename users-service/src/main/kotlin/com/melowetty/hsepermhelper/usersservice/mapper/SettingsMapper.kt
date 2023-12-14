@@ -9,8 +9,7 @@ class SettingsMapper {
     fun toEntity(settingsDto: SettingsDto): Settings {
         return Settings(
             id = settingsDto.id,
-            group = settingsDto.group,
-            subGroup = settingsDto.subGroup,
+            language = settingsDto.language,
             includeQuarterSchedule = settingsDto.includeQuarterSchedule,
             includeCommonEnglish = settingsDto.includeCommonEnglish,
             includeCommonMinor = settingsDto.includeCommonMinor,
@@ -23,8 +22,7 @@ class SettingsMapper {
     fun toDto(settings: Settings): SettingsDto {
         return SettingsDto(
             id = settings.id,
-            group = settings.group,
-            subGroup = settings.subGroup,
+            language = settings.language,
             includeQuarterSchedule = settings.includeQuarterSchedule,
             includeCommonEnglish = settings.includeCommonEnglish,
             includeCommonMinor = settings.includeCommonMinor,

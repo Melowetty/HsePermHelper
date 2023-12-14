@@ -21,10 +21,6 @@ class UserServiceImpl(
         }
     }
 
-    override fun getUsers(group: String, subGroup: Int): List<UserDto> {
-        return userRepository.findAllBySettingsGroupAndSettingsSubGroup(group, subGroup).map { mapper.toDto(it) }
-    }
-
     override fun getUserByTelegramId(telegramId: Long): UserDto? {
         val user = userRepository.findByTelegramId(telegramId) ?: return null
         return mapper.toDto(user)

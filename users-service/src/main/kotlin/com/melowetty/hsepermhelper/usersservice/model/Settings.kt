@@ -9,12 +9,8 @@ data class Settings(
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     val id: Long? = null,
-
-    @Column(name = "user_group")
-    val group: String = "",
-
-    @Column(name = "user_sub_group")
-    val subGroup: Int = 0,
+    @Enumerated(EnumType.STRING)
+    val language: Language,
 
     @Column(name = "include_quarter_schedule", columnDefinition="BOOLEAN DEFAULT false")
     val includeQuarterSchedule: Boolean = false,

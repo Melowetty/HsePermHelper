@@ -1,6 +1,7 @@
 package com.melowetty.hsepermhelper.usersservice.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.melowetty.hsepermhelper.usersservice.model.Language
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "Настройки пользователя")
@@ -8,11 +9,7 @@ data class SettingsDto(
     @JsonIgnore
     val id: Long? = null,
 
-    @Schema(description = "Учебная группа пользователя", example = "РИС-22-3", required = true)
-    val group: String,
-
-    @Schema(description = "Учебная подгруппа пользователя", example = "5", required = true)
-    val subGroup: Int = -1,
+    val language: Language,
 
     @Schema(description = "Включать ли расписание на модуль в общее расписание", example = "false")
     val includeQuarterSchedule: Boolean = false,
