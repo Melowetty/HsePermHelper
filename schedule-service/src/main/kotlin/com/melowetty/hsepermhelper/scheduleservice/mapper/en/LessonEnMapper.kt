@@ -4,14 +4,17 @@ import com.ibm.icu.text.Transliterator
 import com.melowetty.hsepermhelper.scheduleservice.dto.LessonDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonPlaceMapper
+import com.melowetty.hsepermhelper.scheduleservice.mapper.ru.LessonPlaceRuMapper
 import com.melowetty.hsepermhelper.scheduleservice.model.*
 import com.melowetty.hsepermhelper.scheduleservice.utils.DateUtils
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Component("lesson_en_mapper")
 class LessonEnMapper(
+    @Qualifier("lesson_place_en_mapper")
     private val lessonPlaceMapper: LessonPlaceMapper,
 ): LessonMapper {
     override fun toEntity(lesson: LessonDto): Lesson {
@@ -19,7 +22,9 @@ class LessonEnMapper(
             id = null,
             name = lesson.programme,
             translatedName = lesson.programme,
-            course = lesson.course
+            course = lesson.course,
+            fullName = null,
+            translatedFullName = null,
         )
         return Lesson(
             id = null,
@@ -48,7 +53,7 @@ class LessonEnMapper(
 
     override fun toDto(scheduleType: ScheduleType, lesson: Lesson): LessonDto {
         return LessonDto(
-            subject = lesson.subject.name,
+            subject = lesson.subject.translatedName ?: translate(lesson.subject.name),
             course = lesson.subject.programme.course,
             programme = lesson.subject.programme.translatedName ?: translate(lesson.subject.programme.name),
             group = lesson.group.translatedDisplayName ?: translate(lesson.group.displayName),
@@ -56,7 +61,7 @@ class LessonEnMapper(
             date = lesson.date,
             startTimeStr = lesson.startTime.format(DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN)),
             endTimeStr = lesson.endTime.format(DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN)),
-            lecturer = lesson.lecturer,
+            lecturer = if (lesson.lecturer != null) translate(lesson.lecturer) else null,
             places = lesson.places?.map { lessonPlaceMapper.toDto(it) },
             lessonType = lesson.lessonType,
             parentScheduleType = scheduleType,

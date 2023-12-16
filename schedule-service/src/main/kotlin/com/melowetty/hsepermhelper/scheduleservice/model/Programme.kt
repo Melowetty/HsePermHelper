@@ -6,7 +6,6 @@ import jakarta.persistence.*
 @Table(
     uniqueConstraints = [
         UniqueConstraint(columnNames = ["name", "course"]),
-        //UniqueConstraint(columnNames = ["translatedName", "course"])
     ]
 )
 data class Programme(
@@ -15,6 +14,8 @@ data class Programme(
     @Column(name = "id", nullable = false)
     val id: Long?,
     val name: String,
+    val fullName: String?,
     val translatedName: String?,
+    val translatedFullName: String?,
     val course: Int,
 )

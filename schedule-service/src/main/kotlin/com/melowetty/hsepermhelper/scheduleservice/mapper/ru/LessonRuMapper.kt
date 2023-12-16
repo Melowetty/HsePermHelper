@@ -5,12 +5,14 @@ import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonPlaceMapper
 import com.melowetty.hsepermhelper.scheduleservice.model.*
 import com.melowetty.hsepermhelper.scheduleservice.utils.DateUtils
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Component("lesson_ru_mapper")
 class LessonRuMapper(
+    @Qualifier("lesson_place_ru_mapper")
     private val lessonPlaceMapper: LessonPlaceMapper,
 ): LessonMapper {
     override fun toEntity(lesson: LessonDto): Lesson {
@@ -18,7 +20,9 @@ class LessonRuMapper(
             id = null,
             name = lesson.programme,
             translatedName = null,
-            course = lesson.course
+            course = lesson.course,
+            fullName = null,
+            translatedFullName = null,
         )
         return Lesson(
             id = null,
