@@ -1,11 +1,9 @@
 package com.melowetty.hsepermhelper.scheduleservice.dto
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.melowetty.hsepermhelper.scheduleservice.model.ScheduleType
-import com.melowetty.hsepermhelper.scheduleservice.utils.DateUtils
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
 
 @Schema(description = "Расписание занятий")
 data class ScheduleDto(

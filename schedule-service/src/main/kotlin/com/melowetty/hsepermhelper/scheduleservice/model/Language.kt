@@ -1,6 +1,18 @@
 package com.melowetty.hsepermhelper.scheduleservice.model
 
+
 enum class Language {
     RUSSIAN,
-    ENGLISH
+    ENGLISH;
+
+    companion object {
+        fun fromString(value: String): Language? {
+            for (lang in Language.entries) {
+                if (lang.name.equals(value, ignoreCase = true)) {
+                    return lang
+                }
+            }
+            return null
+        }
+    }
 }

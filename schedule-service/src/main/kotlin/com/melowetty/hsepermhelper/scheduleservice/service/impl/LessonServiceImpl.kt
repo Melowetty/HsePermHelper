@@ -4,7 +4,6 @@ import com.melowetty.hsepermhelper.scheduleservice.model.Lesson
 import com.melowetty.hsepermhelper.scheduleservice.repository.LessonRepository
 import com.melowetty.hsepermhelper.scheduleservice.service.GroupService
 import com.melowetty.hsepermhelper.scheduleservice.service.LessonService
-import com.melowetty.hsepermhelper.scheduleservice.service.ProgrammeService
 import com.melowetty.hsepermhelper.scheduleservice.service.SubjectService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

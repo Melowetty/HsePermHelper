@@ -2,7 +2,6 @@ package com.melowetty.hsepermhelper.scheduleservice.service.impl
 
 import com.melowetty.hsepermhelper.scheduleservice.model.Subject
 import com.melowetty.hsepermhelper.scheduleservice.repository.SubjectRepository
-import com.melowetty.hsepermhelper.scheduleservice.service.GroupService
 import com.melowetty.hsepermhelper.scheduleservice.service.ProgrammeService
 import com.melowetty.hsepermhelper.scheduleservice.service.SubjectService
 import org.springframework.stereotype.Service

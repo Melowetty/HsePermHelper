@@ -3,11 +3,8 @@ package com.melowetty.hsepermhelper.scheduleservice.service.impl
 import com.melowetty.hsepermhelper.scheduleservice.dto.ScheduleDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
 import com.melowetty.hsepermhelper.scheduleservice.mapper.ScheduleMapper
-import com.melowetty.hsepermhelper.scheduleservice.model.*
-import com.melowetty.hsepermhelper.scheduleservice.repository.GroupRepository
-import com.melowetty.hsepermhelper.scheduleservice.repository.LessonRepository
+import com.melowetty.hsepermhelper.scheduleservice.model.Language
 import com.melowetty.hsepermhelper.scheduleservice.repository.ScheduleRepository
-import com.melowetty.hsepermhelper.scheduleservice.repository.SubjectRepository
 import com.melowetty.hsepermhelper.scheduleservice.service.LessonService
 import com.melowetty.hsepermhelper.scheduleservice.service.ScheduleFileConverter
 import com.melowetty.hsepermhelper.scheduleservice.service.ScheduleService
@@ -15,8 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.ByteArrayInputStream
-import java.time.LocalDate
-import java.time.LocalTime
 import java.util.*
 
 @Service

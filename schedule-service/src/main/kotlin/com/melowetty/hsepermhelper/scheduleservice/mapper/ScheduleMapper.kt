@@ -2,8 +2,6 @@ package com.melowetty.hsepermhelper.scheduleservice.mapper
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.ScheduleDto
 import com.melowetty.hsepermhelper.scheduleservice.model.Schedule
-import org.springframework.stereotype.Component
-import java.util.*
 
 class ScheduleMapper(
     private val lessonMapper: LessonMapper

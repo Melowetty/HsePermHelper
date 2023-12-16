@@ -4,7 +4,6 @@ import com.ibm.icu.text.Transliterator
 import com.melowetty.hsepermhelper.scheduleservice.dto.LessonDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonPlaceMapper
-import com.melowetty.hsepermhelper.scheduleservice.mapper.ru.LessonPlaceRuMapper
 import com.melowetty.hsepermhelper.scheduleservice.model.*
 import com.melowetty.hsepermhelper.scheduleservice.utils.DateUtils
 import org.springframework.beans.factory.annotation.Qualifier
