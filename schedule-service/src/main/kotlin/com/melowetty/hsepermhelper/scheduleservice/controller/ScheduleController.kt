@@ -11,7 +11,7 @@ class ScheduleController(
 ) {
     @GetMapping("schedules")
     fun getAllSchedules() =
-        scheduleService.findAllSchedules(Language.RUSSIAN)
+        scheduleService.getSchedulesByGroupId(2, Language.ENGLISH)
 
     @PostMapping("schedules")
     fun convert(@RequestBody bytes: String) =

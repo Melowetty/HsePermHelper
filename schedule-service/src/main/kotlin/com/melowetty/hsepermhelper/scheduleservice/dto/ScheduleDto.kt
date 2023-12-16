@@ -14,10 +14,8 @@ data class ScheduleDto(
     @Schema(description = "Номер недели", example = "6", nullable = true)
     val weekNumber: Int?,
     val lessons: List<LessonDto>,
-    @JsonFormat(pattern = DateUtils.DATE_PATTERN)
     @Schema(description = "Дата начала недели", example = "03.09.2023", type = "string")
     val weekStart: LocalDate,
-    @JsonFormat(pattern = DateUtils.DATE_PATTERN)
     @Schema(description = "Дата конца недели", example = "10.09.2023", type = "string")
     val weekEnd: LocalDate,
     @Schema(description = "Тип расписания")

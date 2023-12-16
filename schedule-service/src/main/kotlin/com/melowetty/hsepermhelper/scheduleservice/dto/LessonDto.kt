@@ -13,11 +13,10 @@ import java.time.LocalDate
 data class LessonDto(
     @Schema(description = "Учебный предмет", example = "Программирование")
     val subject: String,
-    @JsonIgnore val course: Int,
-    @JsonIgnore val programme: String,
-    @JsonIgnore val group: String,
+    val course: Int,
+    val programme: String,
+    val group: String,
     val subGroup: Int?,
-    @JsonFormat(pattern = DateUtils.DATE_PATTERN)
     @Schema(description = "Дата пары", example = "03.09.2023", type = "string")
     val date: LocalDate,
     @Schema(description = "Время начала пары", example = "8:10")
