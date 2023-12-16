@@ -52,6 +52,8 @@ enum class LessonType(val type: String) {
             return subject
                 .replace("[", "")
                 .replace("]", "")
+                .replace("(ДОЦ)", "")
+                .replace("ДОЦ", "")
                 .trim()
         }
     },
