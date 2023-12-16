@@ -11,15 +11,6 @@ data class SettingsDto(
 
     val language: Language,
 
-    @Schema(description = "Включать ли расписание на модуль в общее расписание", example = "false")
-    val includeQuarterSchedule: Boolean = false,
-
-    @Schema(description = "Включать ли общие пары английского в общее расписание", example = "false")
-    val includeCommonEnglish: Boolean = false,
-
-    @Schema(description = "Включать ли общие пары майнора в общее расписание", example = "true")
-    val includeCommonMinor: Boolean = true,
-
     @JsonIgnore
     @Schema(description = "Включен ли удаленный календарь", example = "false")
     val isEnabledRemoteCalendar: Boolean = false,

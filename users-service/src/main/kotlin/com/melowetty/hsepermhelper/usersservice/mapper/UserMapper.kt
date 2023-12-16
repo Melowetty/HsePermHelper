@@ -3,6 +3,7 @@ package com.melowetty.hsepermhelper.usersservice.mapper
 import com.melowetty.hsepermhelper.usersservice.dto.UserDto
 import com.melowetty.hsepermhelper.usersservice.model.User
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 
 @Component
 class UserMapper(
@@ -13,7 +14,8 @@ class UserMapper(
         return User(
             id = userDto.id,
             telegramId = userDto.telegramId,
-            settings = settingsMapper.toEntity(userDto.settings)
+            settings = settingsMapper.toEntity(userDto.settings),
+            creationDate = userDto.creationDate
         )
     }
 
@@ -21,7 +23,8 @@ class UserMapper(
         return UserDto(
             id = user.id,
             telegramId = user.telegramId,
-            settings = settingsMapper.toDto(user.settings)
+            settings = settingsMapper.toDto(user.settings),
+            creationDate = user.creationDate ?: LocalDateTime.now(),
         )
     }
 }
