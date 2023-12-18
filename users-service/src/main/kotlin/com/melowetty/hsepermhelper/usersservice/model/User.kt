@@ -21,5 +21,9 @@ data class User(
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "settings_id")
-    val settings: Settings
+    val settings: Settings,
+
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "telegram_info_id")
+    val telegramInfo: TelegramInfo? = null,
 )

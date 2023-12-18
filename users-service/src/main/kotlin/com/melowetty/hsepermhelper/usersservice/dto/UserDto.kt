@@ -16,6 +16,9 @@ data class UserDto(
     val creationDate: LocalDateTime = LocalDateTime.now(),
 
     @Schema(description = "Настройки пользователя")
-    val settings: SettingsDto
+    val settings: SettingsDto,
+
+    @Schema(description = "Информация от телеграмма о пользователе")
+    val telegramInfo: TelegramInfoDto? = null
 
 )
