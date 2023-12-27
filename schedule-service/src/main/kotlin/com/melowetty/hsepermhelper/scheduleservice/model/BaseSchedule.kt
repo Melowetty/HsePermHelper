@@ -5,18 +5,19 @@ import java.time.LocalDate
 import java.util.*
 
 @Entity
-data class Schedule(
+@Table(name = "schedule")
+@Inheritance
+abstract class BaseSchedule(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     val id: Long? = null,
     @Column(name = "system_id", unique = true, nullable = false)
     val systemId: UUID ,
-    val weekNumber: Int?,
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToMany(cascade = [CascadeType.PERSIST], targetEntity = BaseLesson::class)
     @JoinColumn(name = "schedule_id")
-    val lessons: List<Lesson>,
-    val weekStart: LocalDate,
-    val weekEnd: LocalDate,
+    var lessons: List<BaseLesson>,
+    val scheduleStart: LocalDate,
+    val scheduleEnd: LocalDate,
     val scheduleType: ScheduleType,
 )

@@ -1,6 +1,6 @@
 package com.melowetty.hsepermhelper.scheduleservice.service.impl
 
-import com.melowetty.hsepermhelper.scheduleservice.model.Lesson
+import com.melowetty.hsepermhelper.scheduleservice.model.BaseLesson
 import com.melowetty.hsepermhelper.scheduleservice.repository.LessonRepository
 import com.melowetty.hsepermhelper.scheduleservice.service.GroupService
 import com.melowetty.hsepermhelper.scheduleservice.service.LessonService
@@ -15,9 +15,11 @@ class LessonServiceImpl(
     private val groupService: GroupService
 ): LessonService {
     @Transactional
-    override fun save(lesson: Lesson): Lesson {
+    override fun save(lesson: BaseLesson): BaseLesson {
         val subject = subjectService.save(lesson.subject)
         val group = groupService.save(lesson.group)
-        return lessonRepository.save(lesson.copy(subject = subject, group = group))
+        lesson.subject = subject
+        lesson.group = group
+        return lessonRepository.save(lesson)
     }
 }

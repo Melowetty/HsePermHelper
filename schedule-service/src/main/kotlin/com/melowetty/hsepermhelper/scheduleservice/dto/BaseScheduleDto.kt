@@ -6,16 +6,15 @@ import java.time.LocalDate
 import java.util.*
 
 @Schema(description = "Расписание занятий")
-data class ScheduleDto(
+abstract class BaseScheduleDto(
     @Schema(description = "Уникальный идентификатор расписания")
     val uuid: UUID,
     @Schema(description = "Номер недели", example = "6", nullable = true)
-    val weekNumber: Int?,
-    val lessons: List<LessonDto>,
+    val lessons: List<BaseLessonDto>,
     @Schema(description = "Дата начала недели", example = "03.09.2023", type = "string")
-    val weekStart: LocalDate,
+    val scheduleStart: LocalDate,
     @Schema(description = "Дата конца недели", example = "10.09.2023", type = "string")
-    val weekEnd: LocalDate,
+    val scheduleEnd: LocalDate,
     @Schema(description = "Тип расписания")
     val scheduleType: ScheduleType
 )

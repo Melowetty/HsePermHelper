@@ -1,23 +1,23 @@
 package com.melowetty.hsepermhelper.scheduleservice.model
 
 import jakarta.persistence.*
-import java.time.LocalDate
 import java.time.LocalTime
 
 @Entity
-data class Lesson(
+@Table(name = "lesson")
+@Inheritance
+abstract class BaseLesson(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     val id: Long?,
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "subject_id")
-    val subject: Subject,
+    var subject: Subject,
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "group_id")
-    val group: Group,
+    var group: Group,
     val subGroup: Int?,
-    val date: LocalDate,
     val startTime: LocalTime,
     val endTime: LocalTime,
     val lecturer: String?,

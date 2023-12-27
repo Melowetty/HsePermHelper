@@ -1,6 +1,6 @@
 package com.melowetty.hsepermhelper.scheduleservice.service.impl
 
-import com.melowetty.hsepermhelper.scheduleservice.dto.ScheduleDto
+import com.melowetty.hsepermhelper.scheduleservice.dto.BaseScheduleDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
 import com.melowetty.hsepermhelper.scheduleservice.mapper.ScheduleMapper
 import com.melowetty.hsepermhelper.scheduleservice.model.Language
@@ -24,16 +24,16 @@ class ScheduleServiceImpl(
     @Qualifier("lesson_en_mapper")
     private val englishLessonMapper: LessonMapper,
 ): ScheduleService {
-    override fun findAllSchedules(lang: Language): List<ScheduleDto> {
+    override fun findAllSchedules(lang: Language): List<BaseScheduleDto> {
         return scheduleRepository.findAll().map { getScheduleMapperByLanguage(lang).toDto(it) }
     }
 
-    override fun getSchedulesByGroupId(groupId: Long, lang: Language): List<ScheduleDto> {
+    override fun getSchedulesByGroupId(groupId: Long, lang: Language): List<BaseScheduleDto> {
         val schedules = scheduleRepository.getSchedulesByGroupId(groupId)
         return schedules.map { getScheduleMapperByLanguage(lang).toDto(it) }
     }
 
-    override fun getSchedulesByProgrammeId(programmeId: Long, lang: Language): List<ScheduleDto> {
+    override fun getSchedulesByProgrammeId(programmeId: Long, lang: Language): List<BaseScheduleDto> {
         val schedules = scheduleRepository.getSchedulesByProgrammeId(programmeId)
         return schedules.map { getScheduleMapperByLanguage(lang).toDto(it) }
     }
@@ -54,11 +54,12 @@ class ScheduleServiceImpl(
     @Transactional
     override fun mockInputStream(base64: String) {
         val inputStream = ByteArrayInputStream(Base64.getDecoder().decode(base64))
-        val schedule = scheduleFileConverter.convertInputStreamToScheduleDto(inputStream)
+        val schedule = scheduleFileConverter.convertInputStreamToScheduleDto(UUID.randomUUID(), inputStream)
         if (schedule != null) {
             val scheduleEntity = ScheduleMapper(russianLessonMapper).toEntity(schedule)
             val savedLessons = scheduleEntity.lessons.map { lessonService.save(it) }
-            scheduleRepository.saveAndFlush(scheduleEntity.copy(lessons = savedLessons))
+            scheduleEntity.lessons = savedLessons
+            scheduleRepository.saveAndFlush(scheduleEntity)
         }
     }
 }

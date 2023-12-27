@@ -1,15 +1,16 @@
 package com.melowetty.hsepermhelper.scheduleservice.controller
 
-import com.melowetty.hsepermhelper.scheduleservice.dto.ScheduleDto
+import com.melowetty.hsepermhelper.scheduleservice.dto.BaseScheduleDto
+import com.melowetty.hsepermhelper.scheduleservice.service.LanguageService
 import com.melowetty.hsepermhelper.scheduleservice.service.ScheduleService
-import com.melowetty.hsepermhelper.scheduleservice.utils.LanguageUtils
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping
 class ScheduleController(
-    private val scheduleService: ScheduleService
+    private val scheduleService: ScheduleService,
+    private val languageService: LanguageService,
 ) {
 
     @GetMapping("schedules")
@@ -17,8 +18,8 @@ class ScheduleController(
         request: HttpServletRequest,
         @RequestParam(required = false) programmeId: Long?,
         @RequestParam(required = false) groupId: Long?
-    ): List<ScheduleDto> {
-        val lang = LanguageUtils.getLanguageFromHeaders(request)
+    ): List<BaseScheduleDto> {
+        val lang = languageService.getLanguageFromHeaders(request)
         return if(programmeId != null) {
             if(groupId != null) {
                 scheduleService.getSchedulesByGroupId(groupId, lang)
