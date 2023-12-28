@@ -84,7 +84,10 @@ class LessonRuMapper(
         val group = lesson.group.displayName
         val startTime = lesson.startTime.format(DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN))
         val endTime = lesson.endTime.format(DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN))
-        val places = lesson.places?.map { lessonPlaceMapper.toDto(it) }
+        var places = lesson.places?.map { lessonPlaceMapper.toDto(it) }
+        if (places?.isEmpty() == true) {
+            places = null
+        }
         when (lesson) {
             is WeekLesson -> {
                 return WeekLessonDto(
