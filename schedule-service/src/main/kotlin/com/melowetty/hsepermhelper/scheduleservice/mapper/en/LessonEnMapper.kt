@@ -132,4 +132,8 @@ class LessonEnMapper(
             return Transliterator.getInstance(CYRILLIC_TO_LATIN).transliterate(russian)
         }
     }
+
+    override fun getLanguage(): Language {
+        return Language.ENGLISH
+    }
 }

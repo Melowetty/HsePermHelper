@@ -2,6 +2,7 @@ package com.melowetty.hsepermhelper.scheduleservice.mapper.ru
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.LessonPlaceDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonPlaceMapper
+import com.melowetty.hsepermhelper.scheduleservice.model.Language
 import com.melowetty.hsepermhelper.scheduleservice.model.LessonPlace
 import org.springframework.stereotype.Component
 
@@ -19,5 +20,9 @@ class LessonPlaceRuMapper: LessonPlaceMapper {
             office = lessonPlace.office,
             building = lessonPlace.building
         )
+    }
+
+    override fun getLanguage(): Language {
+        return Language.RUSSIAN
     }
 }

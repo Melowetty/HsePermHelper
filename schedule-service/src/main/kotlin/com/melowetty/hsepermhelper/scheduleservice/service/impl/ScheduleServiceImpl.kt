@@ -1,7 +1,7 @@
 package com.melowetty.hsepermhelper.scheduleservice.service.impl
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.BaseScheduleDto
-import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
+import com.melowetty.hsepermhelper.scheduleservice.mapper.MapperWithLanguage
 import com.melowetty.hsepermhelper.scheduleservice.mapper.ScheduleMapper
 import com.melowetty.hsepermhelper.scheduleservice.model.Language
 import com.melowetty.hsepermhelper.scheduleservice.repository.ScheduleRepository
@@ -19,11 +19,12 @@ class ScheduleServiceImpl(
     private val scheduleRepository: ScheduleRepository,
     private val lessonService: LessonService,
     private val scheduleFileConverter: ScheduleFileConverter,
-    @Qualifier("lesson_ru_mapper")
-    private val russianLessonMapper: LessonMapper,
-    @Qualifier("lesson_en_mapper")
-    private val englishLessonMapper: LessonMapper,
+    scheduleMappers: List<ScheduleMapper>,
+    @Qualifier("scheduleRuMapper")
+    private val ruScheduleMapper: ScheduleMapper
 ): ScheduleService {
+    val scheduleMapper: Map<Language, ScheduleMapper> = MapperWithLanguage.getMapWithKeyByLanguage(scheduleMappers)
+
     override fun findAllSchedules(lang: Language): List<BaseScheduleDto> {
         return scheduleRepository.findAll().map { getScheduleMapperByLanguage(lang).toDto(it) }
     }
@@ -39,16 +40,7 @@ class ScheduleServiceImpl(
     }
 
     private fun getScheduleMapperByLanguage(language: Language): ScheduleMapper {
-        val lessonModelMapper: LessonMapper = when(language) {
-            Language.RUSSIAN -> {
-                russianLessonMapper
-            }
-
-            Language.ENGLISH -> {
-                englishLessonMapper
-            }
-        }
-        return ScheduleMapper(lessonModelMapper)
+        return scheduleMapper.getOrDefault(language, ruScheduleMapper)
     }
 
     @Transactional
@@ -56,7 +48,7 @@ class ScheduleServiceImpl(
         val inputStream = ByteArrayInputStream(Base64.getDecoder().decode(base64))
         val schedule = scheduleFileConverter.convertInputStreamToScheduleDto(UUID.randomUUID(), inputStream)
         if (schedule != null) {
-            val scheduleEntity = ScheduleMapper(russianLessonMapper).toEntity(schedule)
+            val scheduleEntity = ruScheduleMapper.toEntity(schedule)
             val savedLessons = scheduleEntity.lessons.map { lessonService.save(it) }
             scheduleEntity.lessons = savedLessons
             scheduleRepository.saveAndFlush(scheduleEntity)

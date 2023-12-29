@@ -3,6 +3,7 @@ package com.melowetty.hsepermhelper.scheduleservice.mapper.en
 import com.ibm.icu.text.Transliterator
 import com.melowetty.hsepermhelper.scheduleservice.dto.LessonPlaceDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonPlaceMapper
+import com.melowetty.hsepermhelper.scheduleservice.model.Language
 import com.melowetty.hsepermhelper.scheduleservice.model.LessonPlace
 import org.springframework.stereotype.Component
 
@@ -20,6 +21,10 @@ class LessonPlaceEnMapper: LessonPlaceMapper {
             office = lessonPlace.office?.let { translate(it) },
             building = lessonPlace.building
         )
+    }
+
+    override fun getLanguage(): Language {
+        return Language.ENGLISH
     }
 
     companion object {

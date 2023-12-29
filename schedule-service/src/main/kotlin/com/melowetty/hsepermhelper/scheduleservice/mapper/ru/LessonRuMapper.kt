@@ -124,4 +124,8 @@ class LessonRuMapper(
             else -> throw IllegalArgumentException("Неверный тип у пары!")
         }
     }
+
+    override fun getLanguage(): Language {
+        return Language.RUSSIAN
+    }
 }
