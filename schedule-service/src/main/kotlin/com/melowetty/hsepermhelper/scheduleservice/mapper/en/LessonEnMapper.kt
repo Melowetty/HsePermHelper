@@ -1,6 +1,5 @@
 package com.melowetty.hsepermhelper.scheduleservice.mapper.en
 
-import com.ibm.icu.text.Transliterator
 import com.melowetty.hsepermhelper.scheduleservice.dto.BaseLessonDto
 import com.melowetty.hsepermhelper.scheduleservice.dto.QuarterLessonDto
 import com.melowetty.hsepermhelper.scheduleservice.dto.WeekLessonDto
@@ -8,6 +7,7 @@ import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonPlaceMapper
 import com.melowetty.hsepermhelper.scheduleservice.model.*
 import com.melowetty.hsepermhelper.scheduleservice.utils.DateUtils
+import com.melowetty.hsepermhelper.scheduleservice.utils.TranslateUtils
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import java.time.LocalTime
@@ -79,13 +79,13 @@ class LessonEnMapper(
     }
 
     override fun toDto(scheduleType: ScheduleType, lesson: BaseLesson): BaseLessonDto {
-        val subject = lesson.subject.translatedName ?: translate(lesson.subject.name)
+        val subject = lesson.subject.translatedName ?: TranslateUtils.translate(lesson.subject.name)
         val course = lesson.subject.programme.course
-        val programme = lesson.subject.programme.translatedName ?: translate(lesson.subject.programme.name)
-        val group = lesson.group.translatedDisplayName ?: translate(lesson.group.displayName)
+        val programme = lesson.subject.programme.translatedName ?: TranslateUtils.translate(lesson.subject.programme.name)
+        val group = lesson.group.translatedDisplayName ?: TranslateUtils.translate(lesson.group.displayName)
         val startTime = lesson.startTime.format(DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN))
         val endTime = lesson.endTime.format(DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN))
-        val lecturer = if (lesson.lecturer != null) translate(lesson.lecturer) else null
+        val lecturer = if (lesson.lecturer != null) TranslateUtils.translate(lesson.lecturer) else null
         var places = lesson.places?.map { lessonPlaceMapper.toDto(it) }
         if (places?.isEmpty() == true) {
             places = null
@@ -129,13 +129,6 @@ class LessonEnMapper(
 
     override fun toDto(entity: BaseLesson): BaseLessonDto {
         return toDto(ScheduleType.COMMON_WEEK_SCHEDULE, entity)
-    }
-
-    companion object {
-        private const val CYRILLIC_TO_LATIN = "Russian-Latin/BGN"
-        private fun translate(russian: String): String {
-            return Transliterator.getInstance(CYRILLIC_TO_LATIN).transliterate(russian)
-        }
     }
 
     override fun getLanguage(): Language {
