@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component
 
 @Component("lesson_place_ru_mapper")
 class LessonPlaceRuMapper: LessonPlaceMapper {
-    override fun toEntity(lessonPlace: LessonPlaceDto): LessonPlace {
+    override fun toEntity(dto: LessonPlaceDto): LessonPlace {
         return LessonPlace(
-            building = lessonPlace.building,
-            office = lessonPlace.office,
+            building = dto.building,
+            office = dto.office,
         )
     }
 
-    override fun toDto(lessonPlace: LessonPlace): LessonPlaceDto {
+    override fun toDto(entity: LessonPlace): LessonPlaceDto {
         return LessonPlaceDto(
-            office = lessonPlace.office,
-            building = lessonPlace.building
+            office = entity.office,
+            building = entity.building
         )
     }
 

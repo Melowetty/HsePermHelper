@@ -18,44 +18,44 @@ class LessonEnMapper(
     @Qualifier("lesson_place_en_mapper")
     private val lessonPlaceMapper: LessonPlaceMapper,
 ): LessonMapper {
-    override fun toEntity(lesson: BaseLessonDto): BaseLesson {
+    override fun toEntity(dto: BaseLessonDto): BaseLesson {
         val programme = Programme(
             id = null,
-            name = lesson.programme,
-            translatedName = lesson.programme,
-            course = lesson.course,
+            name = dto.programme,
+            translatedName = dto.programme,
+            course = dto.course,
             fullName = null,
             translatedFullName = null,
         )
         val subject = Subject(
-            name = lesson.subject,
-            translatedName = lesson.subject,
+            name = dto.subject,
+            translatedName = dto.subject,
             programme = programme,
         )
         val group = Group(
             id = null,
             programme = programme,
-            displayName = lesson.group,
-            translatedDisplayName = lesson.group,
+            displayName = dto.group,
+            translatedDisplayName = dto.group,
         )
-        val startTime = LocalTime.parse(lesson.startTime, DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN))
-        val endTime = LocalTime.parse(lesson.endTime, DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN))
-        val places = lesson.places?.map { lessonPlaceMapper.toEntity(it) }
-        when (lesson) {
+        val startTime = LocalTime.parse(dto.startTime, DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN))
+        val endTime = LocalTime.parse(dto.endTime, DateTimeFormatter.ofPattern(DateUtils.TIME_PATTERN))
+        val places = dto.places?.map { lessonPlaceMapper.toEntity(it) }
+        when (dto) {
             is WeekLessonDto -> {
                 return WeekLesson(
                     id = null,
                     subject = subject,
                     group = group,
-                    subGroup = lesson.subGroup,
-                    date = lesson.date,
+                    subGroup = dto.subGroup,
+                    date = dto.date,
                     startTime = startTime,
                     endTime = endTime,
-                    lecturer = lesson.lecturer,
+                    lecturer = dto.lecturer,
                     places = places,
-                    links = lesson.links,
-                    additionalInfo = lesson.additionalInfo,
-                    lessonType = lesson.lessonType,
+                    links = dto.links,
+                    additionalInfo = dto.additionalInfo,
+                    lessonType = dto.lessonType,
                 )
             }
             is QuarterLessonDto -> {
@@ -63,15 +63,15 @@ class LessonEnMapper(
                     id = null,
                     subject = subject,
                     group = group,
-                    subGroup = lesson.subGroup,
-                    dayOfWeek = lesson.dayOfWeek,
+                    subGroup = dto.subGroup,
+                    dayOfWeek = dto.dayOfWeek,
                     startTime = startTime,
                     endTime = endTime,
-                    lecturer = lesson.lecturer,
+                    lecturer = dto.lecturer,
                     places = places,
-                    links = lesson.links,
-                    additionalInfo = lesson.additionalInfo,
-                    lessonType = lesson.lessonType,
+                    links = dto.links,
+                    additionalInfo = dto.additionalInfo,
+                    lessonType = dto.lessonType,
                 )
             }
             else -> throw IllegalArgumentException("Неверный тип у пары!")
@@ -126,6 +126,11 @@ class LessonEnMapper(
             else -> throw IllegalArgumentException("Неверный тип у пары!")
         }
     }
+
+    override fun toDto(entity: BaseLesson): BaseLessonDto {
+        return toDto(ScheduleType.COMMON_WEEK_SCHEDULE, entity)
+    }
+
     companion object {
         private const val CYRILLIC_TO_LATIN = "Russian-Latin/BGN"
         private fun translate(russian: String): String {

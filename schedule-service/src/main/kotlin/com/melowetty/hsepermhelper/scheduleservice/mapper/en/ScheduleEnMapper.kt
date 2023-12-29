@@ -17,25 +17,25 @@ class ScheduleEnMapper(
     @Qualifier("lesson_en_mapper")
     private val lessonMapper: LessonMapper
 ) : ScheduleMapper {
-    override fun toEntity(schedule: BaseScheduleDto): BaseSchedule {
-        when (schedule) {
+    override fun toEntity(dto: BaseScheduleDto): BaseSchedule {
+        when (dto) {
             is WeekScheduleDto -> {
                 return WeekSchedule(
-                    systemId = schedule.uuid,
-                    weekNumber = schedule.weekNumber,
-                    lessons = schedule.lessons.map { lessonMapper.toEntity(it) },
-                    weekStart = schedule.scheduleStart,
-                    weekEnd = schedule.scheduleEnd,
-                    scheduleType = schedule.scheduleType,
+                    systemId = dto.uuid,
+                    weekNumber = dto.weekNumber,
+                    lessons = dto.lessons.map { lessonMapper.toEntity(it) },
+                    weekStart = dto.scheduleStart,
+                    weekEnd = dto.scheduleEnd,
+                    scheduleType = dto.scheduleType,
                 )
             }
             is QuarterScheduleDto -> {
                 return QuarterSchedule(
-                    systemId = schedule.uuid,
-                    quarterNum = schedule.quarterNumber,
-                    lessons = schedule.lessons.map { lessonMapper.toEntity(it) },
-                    quarterStart = schedule.scheduleStart,
-                    quarterEnd = schedule.scheduleEnd,
+                    systemId = dto.uuid,
+                    quarterNum = dto.quarterNumber,
+                    lessons = dto.lessons.map { lessonMapper.toEntity(it) },
+                    quarterStart = dto.scheduleStart,
+                    quarterEnd = dto.scheduleEnd,
                 )
             }
 
@@ -43,25 +43,25 @@ class ScheduleEnMapper(
         }
     }
 
-    override fun toDto(schedule: BaseSchedule): BaseScheduleDto {
-        when (schedule) {
+    override fun toDto(entity: BaseSchedule): BaseScheduleDto {
+        when (entity) {
             is WeekSchedule -> {
                 return WeekScheduleDto(
-                    uuid = schedule.systemId,
-                    weekNumber = schedule.weekNumber,
-                    lessons = schedule.lessons.map { lessonMapper.toDto(schedule.scheduleType, it) },
-                    weekStart = schedule.scheduleStart,
-                    weekEnd = schedule.scheduleEnd,
-                    scheduleType = schedule.scheduleType
+                    uuid = entity.systemId,
+                    weekNumber = entity.weekNumber,
+                    lessons = entity.lessons.map { lessonMapper.toDto(entity.scheduleType, it) },
+                    weekStart = entity.scheduleStart,
+                    weekEnd = entity.scheduleEnd,
+                    scheduleType = entity.scheduleType
                 )
             }
             is QuarterSchedule -> {
                 return QuarterScheduleDto(
-                    uuid = schedule.systemId,
-                    quarterNumber = schedule.quarterNum,
-                    lessons = schedule.lessons.map { lessonMapper.toDto(schedule.scheduleType, it) },
-                    quarterStart = schedule.scheduleStart,
-                    quarterEnd = schedule.scheduleEnd,
+                    uuid = entity.systemId,
+                    quarterNumber = entity.quarterNum,
+                    lessons = entity.lessons.map { lessonMapper.toDto(entity.scheduleType, it) },
+                    quarterStart = entity.scheduleStart,
+                    quarterEnd = entity.scheduleEnd,
                 )
             }
 
