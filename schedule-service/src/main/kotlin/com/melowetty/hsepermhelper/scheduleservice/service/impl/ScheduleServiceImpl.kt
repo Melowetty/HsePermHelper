@@ -22,8 +22,7 @@ class ScheduleServiceImpl(
     scheduleMappers: List<ScheduleMapper>,
     @Qualifier("scheduleRuMapper")
     private val ruScheduleMapper: ScheduleMapper
-): ScheduleService {
-    val scheduleMapper: Map<Language, ScheduleMapper> = MapperWithLanguage.getMapWithKeyByLanguage(scheduleMappers)
+): ScheduleService, MapperWithLanguage<ScheduleMapper>(scheduleMappers, ruScheduleMapper) {
 
     override fun findAllSchedules(lang: Language): List<BaseScheduleDto> {
         return scheduleRepository.findAll().map { getScheduleMapperByLanguage(lang).toDto(it) }
@@ -40,7 +39,7 @@ class ScheduleServiceImpl(
     }
 
     private fun getScheduleMapperByLanguage(language: Language): ScheduleMapper {
-        return scheduleMapper.getOrDefault(language, ruScheduleMapper)
+        return getMapper(language)
     }
 
     @Transactional
