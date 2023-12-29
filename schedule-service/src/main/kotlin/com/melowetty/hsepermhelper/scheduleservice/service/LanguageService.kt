@@ -14,7 +14,7 @@ class LanguageService(
 
     fun getLanguageFromHeaders(request: HttpServletRequest): Language {
         val headers = request.headerNames.toList().map { it.lowercase() }
-        val langContains = headers.contains(languageHeader)
+        val langContains = headers.contains(languageHeader.lowercase())
         return if(langContains) {
             val langValue = request.getHeader(languageHeader)
             Language.fromString(langValue) ?: Language.RUSSIAN

@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ProgrammeRepository: JpaRepository<Programme, Long> {
     fun findByNameAndCourse(name: String, course: Int): Programme?
+    fun findAllByCourse(course: Int): List<Programme>
 }
