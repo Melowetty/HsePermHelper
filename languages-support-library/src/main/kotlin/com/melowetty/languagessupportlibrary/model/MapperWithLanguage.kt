@@ -1,6 +1,6 @@
 package com.melowetty.languagessupportlibrary.model
 
-open class MapperWithLanguage<T: Translatable> (
+abstract class MapperWithLanguage<T: Translatable> (
     instances: List<T>,
     private val defaultInstance: T
 ) {
