@@ -1,4 +1,4 @@
-package com.melowetty.hsepermhelper.scheduleservice.model
+package com.melowetty.languagessupportlibrary.model
 
 
 enum class Language {

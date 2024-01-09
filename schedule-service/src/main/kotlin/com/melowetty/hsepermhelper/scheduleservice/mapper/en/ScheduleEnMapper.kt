@@ -6,9 +6,9 @@ import com.melowetty.hsepermhelper.scheduleservice.dto.WeekScheduleDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
 import com.melowetty.hsepermhelper.scheduleservice.mapper.ScheduleMapper
 import com.melowetty.hsepermhelper.scheduleservice.model.BaseSchedule
-import com.melowetty.hsepermhelper.scheduleservice.model.Language
 import com.melowetty.hsepermhelper.scheduleservice.model.QuarterSchedule
 import com.melowetty.hsepermhelper.scheduleservice.model.WeekSchedule
+import com.melowetty.languagessupportlibrary.model.Language
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 

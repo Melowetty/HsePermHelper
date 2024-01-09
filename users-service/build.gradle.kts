@@ -37,6 +37,8 @@ dependencies {
 	// [Open API]
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 	runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.7.0")
+	/* [Internal dependencies] */
+	implementation(project(":languages-support-library"))
 }
 
 dependencyManagement {

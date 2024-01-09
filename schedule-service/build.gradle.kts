@@ -42,8 +42,9 @@ dependencies {
     /* [Excel Parsing Module] */
     implementation("org.apache.poi:poi:5.2.3")
     implementation("org.apache.poi:poi-ooxml:5.2.3")
-
-    implementation("com.ibm.icu:icu4j:74.1")
+    /* [Internal dependencies] */
+    implementation(project(":mapper-library"))
+    implementation(project(":languages-support-library"))
 }
 
 dependencyManagement {

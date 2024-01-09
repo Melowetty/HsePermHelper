@@ -2,8 +2,8 @@ package com.melowetty.hsepermhelper.scheduleservice.mapper.ru
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.LessonPlaceDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonPlaceMapper
-import com.melowetty.hsepermhelper.scheduleservice.model.Language
 import com.melowetty.hsepermhelper.scheduleservice.model.LessonPlace
+import com.melowetty.languagessupportlibrary.model.Language
 import org.springframework.stereotype.Component
 
 @Component("lesson_place_ru_mapper")

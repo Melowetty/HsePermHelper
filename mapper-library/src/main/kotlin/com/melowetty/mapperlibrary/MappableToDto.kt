@@ -1,4 +1,4 @@
-package com.melowetty.hsepermhelper.scheduleservice.mapper
+package com.melowetty.mapperlibrary
 
 interface MappableToDto<ENTITY, DTO> {
     fun toDto(entity: ENTITY): DTO

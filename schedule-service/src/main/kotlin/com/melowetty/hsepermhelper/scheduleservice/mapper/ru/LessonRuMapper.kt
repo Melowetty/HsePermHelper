@@ -7,6 +7,7 @@ import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonMapper
 import com.melowetty.hsepermhelper.scheduleservice.mapper.LessonPlaceMapper
 import com.melowetty.hsepermhelper.scheduleservice.model.*
 import com.melowetty.hsepermhelper.scheduleservice.utils.DateUtils
+import com.melowetty.languagessupportlibrary.model.Language
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import java.time.LocalTime

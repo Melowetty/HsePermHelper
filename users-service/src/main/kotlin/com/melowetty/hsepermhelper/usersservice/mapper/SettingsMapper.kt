@@ -10,9 +10,6 @@ class SettingsMapper {
         return Settings(
             id = settingsDto.id,
             language = settingsDto.language,
-            isEnabledRemoteCalendar = settingsDto.isEnabledRemoteCalendar,
-            isEnabledNewCommonScheduleNotifications = settingsDto.isEnabledNewCommonScheduleNotifications,
-            isEnabledNewQuarterScheduleNotifications = settingsDto.isEnabledNewQuarterScheduleNotifications,
         )
     }
 
@@ -20,9 +17,6 @@ class SettingsMapper {
         return SettingsDto(
             id = settings.id,
             language = settings.language,
-            isEnabledRemoteCalendar = settings.isEnabledRemoteCalendar,
-            isEnabledNewCommonScheduleNotifications = settings.isEnabledNewCommonScheduleNotifications,
-            isEnabledNewQuarterScheduleNotifications = settings.isEnabledNewQuarterScheduleNotifications,
         )
     }
 }

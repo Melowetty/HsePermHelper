@@ -2,8 +2,8 @@ package com.melowetty.hsepermhelper.scheduleservice.mapper.ru
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.ProgrammeDto
 import com.melowetty.hsepermhelper.scheduleservice.mapper.ProgrammeMapper
-import com.melowetty.hsepermhelper.scheduleservice.model.Language
 import com.melowetty.hsepermhelper.scheduleservice.model.Programme
+import com.melowetty.languagessupportlibrary.model.Language
 import org.springframework.stereotype.Component
 
 @Component("programme_ru_mapper")

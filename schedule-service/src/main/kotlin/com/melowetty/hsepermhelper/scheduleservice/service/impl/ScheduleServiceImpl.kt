@@ -1,13 +1,13 @@
 package com.melowetty.hsepermhelper.scheduleservice.service.impl
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.BaseScheduleDto
-import com.melowetty.hsepermhelper.scheduleservice.mapper.MapperWithLanguage
 import com.melowetty.hsepermhelper.scheduleservice.mapper.ScheduleMapper
-import com.melowetty.hsepermhelper.scheduleservice.model.Language
 import com.melowetty.hsepermhelper.scheduleservice.repository.ScheduleRepository
 import com.melowetty.hsepermhelper.scheduleservice.service.LessonService
 import com.melowetty.hsepermhelper.scheduleservice.service.ScheduleFileConverter
 import com.melowetty.hsepermhelper.scheduleservice.service.ScheduleService
+import com.melowetty.languagessupportlibrary.model.Language
+import com.melowetty.languagessupportlibrary.model.MapperWithLanguage
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
