@@ -2,11 +2,6 @@ version: '3.8'
 services:
   eureka-server:
     image: melowetty/eureka-server-perm-helper
-    build:
-      context: ./eureka-server
-      dockerfile: Dockerfile
-    volumes:
-      - ./eureka-server-build:/home/gradle/project/build
     ports:
       - $EUREKA_PORT:$EUREKA_DOCKER_PORT
     env_file: ./.env
@@ -19,11 +14,6 @@ services:
     image: melowetty/api-gateway-perm-helper
     depends_on:
       - eureka-server
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
-    volumes:
-      - ./api-gateway-build:/home/gradle/project/build
     ports:
       - $GATEWAY_PORT:$GATEWAY_DOCKER_PORT
     env_file: ./.env
@@ -34,15 +24,10 @@ services:
     restart: always
 
   users-service:
-    image: melowetty/users-service-perm-helper
+    image: users-service
     depends_on:
       - eureka-server
       - postgresdb-users-service
-    build:
-      context: ./users-service
-      dockerfile: Dockerfile
-    volumes:
-      - ./users-service-build:/home/gradle/project/build
     env_file: ./.env
     environment:
       - SPRING_PROFILES_ACTIVE=$ACTIVE_PROFILE
