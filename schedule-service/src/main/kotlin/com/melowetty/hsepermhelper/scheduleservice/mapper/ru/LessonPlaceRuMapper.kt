@@ -22,7 +22,7 @@ class LessonPlaceRuMapper: LessonPlaceMapper {
         )
     }
 
-    override fun getLanguage(): Language {
+    override fun getCompatibleLanguage(): Language {
         return Language.RUSSIAN
     }
 }

@@ -9,7 +9,7 @@ abstract class MapperWithLanguage<T: Translatable> (
     private fun getMapWithKeyByLanguage(mappers: List<T>): Map<Language, T> {
         val mapper = mutableMapOf<Language, T>()
         mappers.forEach {
-            mapper[it.getLanguage()] = it
+            mapper[it.getCompatibleLanguage()] = it
         }
         return mapper
     }

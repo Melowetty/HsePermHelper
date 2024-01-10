@@ -69,7 +69,7 @@ class ScheduleRuMapper(
         }
     }
 
-    override fun getLanguage(): Language {
+    override fun getCompatibleLanguage(): Language {
         return Language.RUSSIAN
     }
 }

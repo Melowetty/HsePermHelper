@@ -130,7 +130,7 @@ class LessonRuMapper(
         return toDto(ScheduleType.COMMON_WEEK_SCHEDULE, entity)
     }
 
-    override fun getLanguage(): Language {
+    override fun getCompatibleLanguage(): Language {
         return Language.RUSSIAN
     }
 }

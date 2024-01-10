@@ -23,7 +23,7 @@ class LessonPlaceEnMapper: LessonPlaceMapper {
         )
     }
 
-    override fun getLanguage(): Language {
+    override fun getCompatibleLanguage(): Language {
         return Language.ENGLISH
     }
 }

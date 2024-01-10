@@ -40,12 +40,12 @@ class MapperWithLanguageTest {
     )
     interface TestTranslatable: Translatable
     class TestTranslatableRu: TestTranslatable {
-        override fun getLanguage(): Language {
+        override fun getCompatibleLanguage(): Language {
             return Language.RUSSIAN
         }
     }
     class TestTranslatableEn: TestTranslatable {
-        override fun getLanguage(): Language {
+        override fun getCompatibleLanguage(): Language {
             return Language.ENGLISH
         }
     }
