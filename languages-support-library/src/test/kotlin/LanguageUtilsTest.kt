@@ -39,4 +39,22 @@ class LanguageUtilsTest {
 
         assertEquals(Language.RUSSIAN, languageFromHeaders)
     }
+
+    @Test
+    fun `test add language to headers`() {
+        val headers = mapOf(
+            "Content-Type" to "Test",
+            "Origin" to "Test2"
+        )
+
+        val actualHeaders = LanguageUtils.addLanguageToHeaders(headers, Language.RUSSIAN)
+        val expectedHeaders = mapOf(
+            "Content-Type" to "Test",
+            "Origin" to "Test2",
+            "X-Language" to "RUSSIAN"
+        )
+
+        assertEquals(expectedHeaders, actualHeaders)
+        assertEquals(Language.RUSSIAN, LanguageUtils.getLanguageFromHeaders(actualHeaders))
+    }
 }
