@@ -18,7 +18,7 @@ data class ScheduleSettings(
     val subGroupSelect: Set<SubGroupSelect>,
 
     @ElementCollection
-    val bannedSubjects: Set<Long>,
+    val hiddenSubjects: Set<Long>,
 
     @Column(name = "include_quarter_schedule", columnDefinition="BOOLEAN DEFAULT false")
     val includeQuarterSchedule: Boolean = false,

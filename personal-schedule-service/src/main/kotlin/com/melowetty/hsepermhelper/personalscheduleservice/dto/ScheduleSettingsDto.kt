@@ -7,7 +7,7 @@ data class ScheduleSettingsDto(
 
     val subGroupSelect: Map<Long, Int?>,
 
-    val bannedSubjects: Set<Long>,
+    val hiddenSubjects: Set<Long>,
 
     val includeQuarterSchedule: Boolean = false,
 
