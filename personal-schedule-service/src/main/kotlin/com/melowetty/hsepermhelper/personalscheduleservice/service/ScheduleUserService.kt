@@ -1,6 +1,7 @@
 package com.melowetty.hsepermhelper.personalscheduleservice.service
 
 import com.melowetty.hsepermhelper.personalscheduleservice.dto.ScheduleUserDto
+import java.util.UUID
 
 interface ScheduleUserService {
     /**
@@ -16,4 +17,11 @@ interface ScheduleUserService {
      * @param user schedule user dto object
      */
     fun createScheduleUser(user: ScheduleUserDto)
+
+    /**
+     * Get schedule user by uuid
+     *
+     * @return schedule user dto or null
+     */
+    fun getScheduleUser(uuid: UUID): ScheduleUserDto?
 }

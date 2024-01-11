@@ -5,6 +5,8 @@ import com.melowetty.hsepermhelper.personalscheduleservice.mapper.ScheduleUserMa
 import com.melowetty.hsepermhelper.personalscheduleservice.repository.ScheduleUserRepository
 import com.melowetty.hsepermhelper.personalscheduleservice.service.ScheduleUserService
 import org.springframework.stereotype.Service
+import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class ScheduleUserServiceImpl(
@@ -18,5 +20,9 @@ class ScheduleUserServiceImpl(
     override fun createScheduleUser(user: ScheduleUserDto) {
         val userAsEntity = scheduleUserMapper.toEntity(user)
         scheduleUserRepository.save(userAsEntity)
+    }
+
+    override fun getScheduleUser(uuid: UUID): ScheduleUserDto? {
+        return scheduleUserRepository.findById(uuid).getOrNull()?.let { scheduleUserMapper.toDto(it) }
     }
 }
