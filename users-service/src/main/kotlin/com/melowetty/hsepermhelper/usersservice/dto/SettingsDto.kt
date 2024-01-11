@@ -1,7 +1,7 @@
 package com.melowetty.hsepermhelper.usersservice.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.melowetty.hsepermhelper.usersservice.model.Language
+import com.melowetty.languagessupportlibrary.model.Language
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "Настройки пользователя")

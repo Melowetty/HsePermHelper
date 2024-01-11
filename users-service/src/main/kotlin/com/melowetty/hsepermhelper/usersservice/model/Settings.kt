@@ -1,5 +1,6 @@
 package com.melowetty.hsepermhelper.usersservice.model
 
+import com.melowetty.languagessupportlibrary.model.Language
 import jakarta.persistence.*
 
 @Entity
