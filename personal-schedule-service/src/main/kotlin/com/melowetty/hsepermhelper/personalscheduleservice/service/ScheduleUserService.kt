@@ -24,4 +24,20 @@ interface ScheduleUserService {
      * @return schedule user dto or null
      */
     fun getScheduleUser(uuid: UUID): ScheduleUserDto?
+
+    /**
+     * Add hidden subjects in user settings
+     *
+     * @param user target user
+     * @param hiddenSubjects list of subjects id, which must be added
+     */
+    fun addHiddenSubjectsForUser(user: ScheduleUserDto, hiddenSubjects: List<Long>)
+
+    /**
+     * Delete hidden subjects from user settings
+     *
+     * @param user target user
+     * @param hiddenSubjects list of subjects id, which must be deleted
+     */
+    fun deleteHiddenSubjectsForUser(user: ScheduleUserDto, hiddenSubjects: List<Long>)
 }

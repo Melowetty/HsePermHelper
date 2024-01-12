@@ -25,4 +25,20 @@ class ScheduleUserServiceImpl(
     override fun getScheduleUser(uuid: UUID): ScheduleUserDto? {
         return scheduleUserRepository.findById(uuid).getOrNull()?.let { scheduleUserMapper.toDto(it) }
     }
+
+    override fun addHiddenSubjectsForUser(user: ScheduleUserDto, hiddenSubjects: List<Long>) {
+        val newHiddenSubjects = user.settings.hiddenSubjects.toMutableSet()
+        newHiddenSubjects.addAll(hiddenSubjects)
+        val newSettings = user.settings.copy(hiddenSubjects = newHiddenSubjects)
+        val newUser = user.copy(settings = newSettings)
+        scheduleUserRepository.save(scheduleUserMapper.toEntity(newUser))
+    }
+
+    override fun deleteHiddenSubjectsForUser(user: ScheduleUserDto, hiddenSubjects: List<Long>) {
+        val newHiddenSubjects = user.settings.hiddenSubjects.toMutableSet()
+        newHiddenSubjects.removeAll(hiddenSubjects.toSet())
+        val newSettings = user.settings.copy(hiddenSubjects = newHiddenSubjects)
+        val newUser = user.copy(settings = newSettings)
+        scheduleUserRepository.save(scheduleUserMapper.toEntity(newUser))
+    }
 }

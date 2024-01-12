@@ -5,9 +5,9 @@ data class ScheduleSettingsDto(
 
     val groupId: Long,
 
-    val subGroupSelect: Map<Long, Int?>,
+    val subGroupSelect: Map<Long, Int?> = mapOf(),
 
-    val hiddenSubjects: Set<Long>,
+    val hiddenSubjects: Set<Long> = setOf(),
 
     val includeQuarterSchedule: Boolean = false,
 

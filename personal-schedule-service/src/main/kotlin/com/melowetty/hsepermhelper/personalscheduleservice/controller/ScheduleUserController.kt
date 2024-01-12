@@ -2,6 +2,7 @@ package com.melowetty.hsepermhelper.personalscheduleservice.controller
 
 import com.melowetty.hsepermhelper.personalscheduleservice.dto.ScheduleUserDto
 import com.melowetty.hsepermhelper.personalscheduleservice.exceptions.UserNotFoundException
+import com.melowetty.hsepermhelper.personalscheduleservice.service.PersonalScheduleService
 import com.melowetty.hsepermhelper.personalscheduleservice.service.ScheduleUserService
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -9,7 +10,8 @@ import java.util.*
 @RequestMapping("users")
 @RestController
 class ScheduleUserController(
-    private val scheduleUserService: ScheduleUserService
+    private val scheduleUserService: ScheduleUserService,
+    private val personalScheduleService: PersonalScheduleService
 ) {
     @GetMapping
     fun getAllScheduleUsers(): List<ScheduleUserDto> {
@@ -21,6 +23,12 @@ class ScheduleUserController(
         return scheduleUserService.getScheduleUser(uuid) ?: throw UserNotFoundException("User not found by UUID")
     }
 
+    @GetMapping("{uuid}/schedules")
+    fun getPersonalSchedule(@PathVariable(name = "uuid") uuid: UUID): Map<String, Any> {
+        val user = scheduleUserService.getScheduleUser(uuid) ?: throw UserNotFoundException("User not found by UUID")
+        return personalScheduleService.getPersonalSchedule(user)
+    }
+
     @GetMapping("{uuid}/hidden-subjects")
     fun getScheduleUserHiddenSubjects(@PathVariable(name = "uuid") uuid: UUID): List<Long> {
         val user = scheduleUserService.getScheduleUser(uuid) ?: throw UserNotFoundException("User not found by UUID")
@@ -28,15 +36,15 @@ class ScheduleUserController(
     }
 
     @PostMapping("{uuid}/hidden-subjects")
-    fun addScheduleUserHiddenSubject(@PathVariable(name = "uuid") uuid: UUID, @RequestBody subjectId: Long) {
-        val user = scheduleUserService.getScheduleUser(uuid) ?: throw UserNotFoundException("User not found by UUID")
-        //return user.settings.hiddenSubjects.toList() // todo сделать добавление заблокированных предметов
-    }
-
-    @PostMapping("{uuid}/hidden-subjects")
     fun addScheduleUserHiddenSubjects(@PathVariable(name = "uuid") uuid: UUID, @RequestBody subjectIds: List<Long>) {
         val user = scheduleUserService.getScheduleUser(uuid) ?: throw UserNotFoundException("User not found by UUID")
-        //return user.settings.hiddenSubjects.toList() // todo сделать добавление заблокированных предметов
+        scheduleUserService.addHiddenSubjectsForUser(user, subjectIds)
+    }
+
+    @DeleteMapping("{uuid}/hidden-subjects")
+    fun deleteScheduleUserHiddenSubjects(@PathVariable(name = "uuid") uuid: UUID, @RequestBody subjectIds: List<Long>) {
+        val user = scheduleUserService.getScheduleUser(uuid) ?: throw UserNotFoundException("User not found by UUID")
+        //scheduleUserService.addHiddenSubjectsForUser(user, subjectIds)
     }
 
     @GetMapping("{uuid}/subgroup-selections")

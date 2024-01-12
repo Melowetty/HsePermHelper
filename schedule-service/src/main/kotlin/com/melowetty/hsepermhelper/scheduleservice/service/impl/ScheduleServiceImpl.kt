@@ -1,7 +1,9 @@
 package com.melowetty.hsepermhelper.scheduleservice.service.impl
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.BaseScheduleDto
+import com.melowetty.hsepermhelper.scheduleservice.dto.LessonsFilter
 import com.melowetty.hsepermhelper.scheduleservice.mapper.ScheduleMapper
+import com.melowetty.hsepermhelper.scheduleservice.model.BaseSchedule
 import com.melowetty.hsepermhelper.scheduleservice.repository.ScheduleRepository
 import com.melowetty.hsepermhelper.scheduleservice.service.LessonService
 import com.melowetty.hsepermhelper.scheduleservice.service.ScheduleFileConverter
@@ -35,6 +37,23 @@ class ScheduleServiceImpl(
 
     override fun getSchedulesByProgrammeId(programmeId: Long, lang: Language): List<BaseScheduleDto> {
         val schedules = scheduleRepository.getSchedulesByProgrammeId(programmeId)
+        return schedules.map { getScheduleMapperByLanguage(lang).toDto(it) }
+    }
+
+    override fun filterSchedulesByLessonsFilter(lang: Language, filter: LessonsFilter): List<BaseScheduleDto> {
+        val schedules = scheduleRepository.getSchedulesByGroupId(filter.groupId)
+            .map { baseSchedule: BaseSchedule ->
+                baseSchedule.lessons = baseSchedule.lessons.filter {
+                    if(it.subject.id == null) false
+                    if(filter.hiddenSubjects.contains(it.subject.id)) false
+                    if(it.subGroup == null) true
+                    val foundSubgroup = filter.subgroupSelects[it.subject.id]
+                    if(it.subGroup == foundSubgroup) true
+                    if(foundSubgroup == null && it.subGroup == filter.baseSubGroup) true
+                    false
+                }
+                baseSchedule
+            }
         return schedules.map { getScheduleMapperByLanguage(lang).toDto(it) }
     }
 
