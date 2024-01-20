@@ -25,18 +25,14 @@ extra["springCloudVersion"] = "2022.0.4"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// [Database]
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.postgresql:postgresql:42.6.0")
-	// [Open API]
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-	runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.7.0")
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 	/* [Internal dependencies] */
 	implementation(project(":languages-support-library"))
 }

@@ -8,14 +8,12 @@ import org.springframework.stereotype.Component
 class SettingsMapper {
     fun toEntity(settingsDto: SettingsDto): Settings {
         return Settings(
-            id = settingsDto.id,
             language = settingsDto.language,
         )
     }
 
     fun toDto(settings: Settings): SettingsDto {
         return SettingsDto(
-            id = settings.id,
             language = settings.language,
         )
     }

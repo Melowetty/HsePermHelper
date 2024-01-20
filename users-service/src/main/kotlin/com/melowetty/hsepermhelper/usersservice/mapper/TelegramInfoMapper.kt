@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 class TelegramInfoMapper {
     fun toEntity(telegramInfoDto: TelegramInfoDto): TelegramInfo {
         return TelegramInfo(
+            telegramId = telegramInfoDto.telegramId,
             firstName = telegramInfoDto.firstName,
             lastName = telegramInfoDto.lastName,
             username = telegramInfoDto.username,
@@ -16,6 +17,7 @@ class TelegramInfoMapper {
 
     fun toDto(telegramInfo: TelegramInfo): TelegramInfoDto {
         return TelegramInfoDto(
+            telegramId = telegramInfo.telegramId,
             firstName = telegramInfo.firstName,
             lastName = telegramInfo.lastName,
             username = telegramInfo.username,

@@ -1,29 +1,20 @@
 package com.melowetty.hsepermhelper.usersservice.model
 
-import jakarta.persistence.*
-import org.hibernate.annotations.CreationTimestamp
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 import java.util.*
 
-@Entity
-@Table(name = "users")
+@Document(collection = "users")
 data class User(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID = UUID.randomUUID(),
 
-    @Column(name = "telegram_id", unique = true)
-    val telegramId: Long,
+    @CreatedDate
+    val creationDate: LocalDateTime = LocalDateTime.now(),
 
-    @CreationTimestamp
-    @Column(name = "creation_date")
-    val creationDate: LocalDateTime? = null,
-
-    @OneToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "settings_id")
     val settings: Settings,
 
-    @OneToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "telegram_info_id")
     val telegramInfo: TelegramInfo? = null,
 )

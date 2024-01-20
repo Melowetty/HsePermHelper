@@ -2,6 +2,8 @@ package com.melowetty.hsepermhelper.usersservice.service
 
 import com.melowetty.hsepermhelper.usersservice.dto.SettingsDto
 import com.melowetty.hsepermhelper.usersservice.dto.UserDto
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import java.util.*
 
 interface UserService {
@@ -10,28 +12,28 @@ interface UserService {
      * @param telegramId telegram ID of user
      * @return returns user object when it is found or null else
      */
-    fun getUserByTelegramId(telegramId: Long): UserDto?
+    fun getUserByTelegramId(telegramId: Long): Mono<UserDto>
 
     /**
      * Method returns user by he/she ID
      * @param id ID of user
      * @return returns user object when it is found or null else
      */
-    fun getUserById(id: UUID): UserDto?
+    fun getUserById(id: UUID): Mono<UserDto>
 
     /**
      * Method creates user and return telegram ID when operation have success
      * @param user User object
      * @return true if user is created
      */
-    fun createUser(user: UserDto): Boolean
+    fun createUser(user: UserDto): Mono<Boolean>
 
     /**
      * Returns list of all users
      *
      * @return list of users
      */
-    fun getUsers(): List<UserDto>
+    fun getUsers(): Flux<UserDto>
 
     /**
      * Delete user by id
@@ -39,7 +41,7 @@ interface UserService {
      * @param id user UUID
      * @return true if deleting is successful
      */
-    fun deleteUserById(id: UUID): Boolean
+    fun deleteUserById(id: UUID): Mono<Boolean>
 
     /**
      * Delete user by telegram id
@@ -47,7 +49,7 @@ interface UserService {
      * @param telegramId user telegram id
      * @return true if deleting is successful
      */
-    fun deleteUserByTelegramId(telegramId: Long): Boolean
+    fun deleteUserByTelegramId(telegramId: Long): Mono<Boolean>
 
     /**
      * Full update user
@@ -55,7 +57,7 @@ interface UserService {
      * @param user new user data
      * @return new user object
      */
-    fun updateUser(user: UserDto): UserDto?
+    fun updateUser(user: UserDto): Mono<UserDto>
 
     /**
      * Update user settings
@@ -64,7 +66,7 @@ interface UserService {
      * @param settings new user settings
      * @return new user object
      */
-    fun updateUserSettingsByTelegramId(telegramId: Long, settings: SettingsDto): UserDto?
+    fun updateUserSettingsByTelegramId(telegramId: Long, settings: SettingsDto): Mono<UserDto>
 
     /**
      * Update user settings by patch method
@@ -73,5 +75,5 @@ interface UserService {
      * @param settings new user settings
      * @return new user object
      */
-    fun updateUserSettingsByTelegramId(telegramId: Long, settings: Map<String, Any?>): UserDto?
+    fun updateUserSettingsByTelegramId(telegramId: Long, settings: Map<String, Any?>): Mono<UserDto>
 }

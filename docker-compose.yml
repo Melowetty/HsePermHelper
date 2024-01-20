@@ -27,29 +27,27 @@ services:
     image: users-service
     depends_on:
       - eureka-server
-      - postgresdb-users-service
+      - users-service-mongodb
     env_file: ./.env
     environment:
       - SPRING_PROFILES_ACTIVE=$ACTIVE_PROFILE
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresdb-users-service:$POSTGRESDB_USERS_SERVICE_DOCKER_PORT/$USERS_SERVICE_DB_NAME
-      - SPRING_DATASOURCE_USERNAME=$USERS_SERVICE_DB_USERNAME
-      - SPRING_DATASOURCE_PASSWORD=$USERS_SERVICE_DB_PASSWORD
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_DATA_MONGODB_HOST=$USERS_SERVICE_MONGODB_HOST
+      - SPRING_DATA_MONGODB_PORT=$USERS_SERVICE_MONGODB_PORT
+      - SPRING_DATA_MONGODB_DATABASE=$USERS_SERVICE_MONGODB_DATABASE
+      - SPRING_DATA_MONGODB_USERNAME=$USERS_SERVICE_MONGODB_USERNAME
+      - SPRING_DATA_MONGODB_PASSWORD=$USERS_SERVICE_MONGODB_PASSWORD
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=$EUREKA_DEFAULT_ZONE
     restart: always
-
-  postgresdb-users-service:
-    image: postgres
-    restart: unless-stopped
-    env_file: ./.env
+  users-service-mongodb:
+    image: mongo:6-jammy
     environment:
-      - POSTGRES_USER=$USERS_SERVICE_DB_USERNAME
-      - POSTGRES_PASSWORD=$USERS_SERVICE_DB_PASSWORD
-      - POSTGRES_DB=$USERS_SERVICE_DB_NAME
+      - MONGO_INITDB_ROOT_USERNAME=$USERS_SERVICE_MONGODB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$USERS_SERVICE_MONGODB_PASSWORD
     ports:
-      - $POSTGRESDB_USERS_SERVICE_LOCAL_PORT:$POSTGRESDB_USERS_SERVICE_DOCKER_PORT
-#    volumes:
-#      - users-service-db:/var/lib/postgres
+      - $USERS_SERVICE_MONGODB_PORT:$USERS_SERVICE_MONGODB_PORT
+    volumes:
+      - users-service-db-data:/data/db
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
@@ -70,3 +68,5 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+volumes:
+  users-service-db-data:

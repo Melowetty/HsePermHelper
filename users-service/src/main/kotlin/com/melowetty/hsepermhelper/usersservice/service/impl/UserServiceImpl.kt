@@ -6,7 +6,8 @@ import com.melowetty.hsepermhelper.usersservice.mapper.UserMapper
 import com.melowetty.hsepermhelper.usersservice.repository.UserRepository
 import com.melowetty.hsepermhelper.usersservice.service.UserService
 import org.springframework.stereotype.Service
-import org.springframework.util.ReflectionUtils
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import java.util.*
 
 @Service
@@ -15,97 +16,89 @@ class UserServiceImpl(
     private val mapper: UserMapper
 ): UserService {
 
-    override fun getUsers(): List<UserDto> {
-        return userRepository.findAll().toList().map {
+    override fun getUsers(): Flux<UserDto> {
+        return userRepository.findAll().map {
             mapper.toDto(it)
         }
     }
 
-    override fun getUserByTelegramId(telegramId: Long): UserDto? {
-        val user = userRepository.findByTelegramId(telegramId) ?: return null
-        return mapper.toDto(user)
+    override fun getUserByTelegramId(telegramId: Long): Mono<UserDto> {
+        return userRepository.findByTelegramInfo_TelegramId(telegramId).map { mapper.toDto(it) }
     }
 
-    override fun getUserById(id: UUID): UserDto? {
-        val user = userRepository.findById(id).orElse(null) ?: return null
-        return mapper.toDto(user)
+    override fun getUserById(id: UUID): Mono<UserDto> {
+        return userRepository.findById(id).map { mapper.toDto(it) }
     }
 
-    override fun createUser(user: UserDto): Boolean {
-        val isExists = userRepository.existsByTelegramId(user.telegramId)
-        if(isExists) return false
-        userRepository.save(mapper.toEntity(user))
-//        val event = UsersChangedEvent(
-//            user = user,
-//            type = EventType.ADDED
-//        )
-//        eventPublisher.publishEvent(event)
-        return true
-    }
-
-    override fun deleteUserById(id: UUID): Boolean {
-        val user = userRepository.findById(id)
-        if (user.isEmpty) return false
-        userRepository.delete(user.get())
-//        val event = UsersChangedEvent(
-//            user = user.get().toDto(),
-//            type = EventType.DELETED
-//        )
-//        eventPublisher.publishEvent(event)
-        return true
-    }
-
-    override fun deleteUserByTelegramId(telegramId: Long): Boolean {
-        val user = userRepository.findByTelegramId(telegramId) ?: return false
-        userRepository.delete(user)
-//        val event = UsersChangedEvent(
-//            user = user.get().toDto(),
-//            type = EventType.DELETED
-//        )
-//        eventPublisher.publishEvent(event)
-        return true
-    }
-
-    override fun updateUser(user: UserDto): UserDto? {
-        val userId = getUserByTelegramId(user.telegramId)?.id ?: return null
-        val newUser = mapper.toDto(userRepository.save(
-            mapper.toEntity(user.copy(id = userId))
-        ))
-
-//        val event = UsersChangedEvent(
-//            user = newUser,
-//            type = EventType.EDITED
-//        )
-//        eventPublisher.publishEvent(event)
-        return newUser
-    }
-
-    override fun updateUserSettingsByTelegramId(telegramId: Long, settings: SettingsDto): UserDto? {
-        val user = getUserByTelegramId(telegramId) ?: return null
-        val newUser = mapper.toDto(userRepository.save(
-            mapper.toEntity(user.copy(settings = settings))
-        ))
-
-//        val event = UsersChangedEvent(
-//            user = newUser,
-//            type = EventType.EDITED
-//        )
-//        eventPublisher.publishEvent(event)
-        return newUser
-    }
-
-    override fun updateUserSettingsByTelegramId(telegramId: Long, settings: Map<String, Any?>): UserDto? {
-        val user = getUserByTelegramId(telegramId) ?: return null
-        val userSettings = user.settings.copy()
-        val newSettings = settings.toMutableMap()
-        newSettings.remove("id")
-        newSettings.forEach { t, u ->
-            val field = ReflectionUtils.findField(SettingsDto::class.java, t)
-            if (field != null) {
-                field.trySetAccessible()
-                ReflectionUtils.setField(field, userSettings, u)
+    override fun createUser(user: UserDto): Mono<Boolean> {
+        if(user.telegramInfo == null) return Mono.just(false)
+        return userRepository.existsByTelegramInfo_TelegramId(user.telegramInfo.telegramId).flatMap { isExists ->
+            if(isExists) Mono.just(false)
+            else {
+                userRepository.save(mapper.toEntity(user)).map {
+                    it != null
+                }
             }
         }
-        return updateUserSettingsByTelegramId(telegramId, userSettings)
+    }
+
+    override fun deleteUserById(id: UUID): Mono<Boolean> {
+        return userRepository.findById(id).flatMap { user ->
+            userRepository.delete(user).then(Mono.fromCallable { true })
+        }.defaultIfEmpty(false)
+    }
+
+    override fun deleteUserByTelegramId(telegramId: Long): Mono<Boolean> {
+        return userRepository.findByTelegramInfo_TelegramId(telegramId).flatMap { user ->
+            userRepository.delete(user).then(Mono.fromCallable { true })
+        }.defaultIfEmpty(false)
+    }
+
+    override fun updateUser(user: UserDto): Mono<UserDto> {
+        if(user.telegramInfo == null) return Mono.empty()
+        return userRepository.findByTelegramInfo_TelegramId(user.telegramInfo.telegramId).flatMap { foundUser ->
+            userRepository.save(
+                mapper.toEntity(user.copy(id = foundUser.id))
+            ).map { mapper.toDto(it) }
+        }
+
+//        val event = UsersChangedEvent(
+//            user = newUser,
+//            type = EventType.EDITED
+//        )
+//        eventPublisher.publishEvent(event)
+    }
+
+    override fun updateUserSettingsByTelegramId(telegramId: Long, settings: SettingsDto): Mono<UserDto> {
+        // todo добавить при изменении настроек пользователя запросы на другие сервисы
+        return Mono.empty()
+//        val user = getUserByTelegramId(telegramId) ?: return null
+//        val newUser = userRepository.save(
+//            mapper.toEntity(user.copy(settings = settings))
+//        ).map { mapper.toDto(it) }
+//
+////        val event = UsersChangedEvent(
+////            user = newUser,
+////            type = EventType.EDITED
+////        )
+////        eventPublisher.publishEvent(event)
+//        return newUser
+    }
+
+    override fun updateUserSettingsByTelegramId(telegramId: Long, settings: Map<String, Any?>): Mono<UserDto> {
+        // todo добавить при изменении настроек пользователя запросы на другие сервисы
+        return Mono.empty()
+//        val user = getUserByTelegramId(telegramId) ?: return null
+//        val userSettings = user.settings.copy()
+//        val newSettings = settings.toMutableMap()
+//        newSettings.remove("id")
+//        newSettings.forEach { t, u ->
+//            val field = ReflectionUtils.findField(SettingsDto::class.java, t)
+//            if (field != null) {
+//                field.trySetAccessible()
+    //                ReflectionUtils.setField(field, userSettings, u)
+//            }
+//        }
+//        return updateUserSettingsByTelegramId(telegramId, userSettings)
     }
 }
