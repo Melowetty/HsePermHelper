@@ -9,12 +9,12 @@ import java.util.*
 @Document(collection = "users")
 data class User(
     @Id
-    val id: UUID = UUID.randomUUID(),
+    val id: String = UUID.randomUUID().toString(),
 
     @CreatedDate
     val creationDate: LocalDateTime = LocalDateTime.now(),
 
     val settings: Settings,
 
-    val telegramInfo: TelegramInfo? = null,
+    val telegramInfo: TelegramInfo,
 )

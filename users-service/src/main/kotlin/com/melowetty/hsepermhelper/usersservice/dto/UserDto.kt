@@ -1,15 +1,18 @@
 package com.melowetty.hsepermhelper.usersservice.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import java.util.*
 
 data class UserDto(
-    val id: UUID,
+    val id: String,
 
+    @JsonProperty(value = "creation_date")
     val creationDate: LocalDateTime,
 
-    val settings: SettingsDto,
+    val settings: Map<String, Any>,
 
-    val telegramInfo: TelegramInfoDto? = null
+    @JsonProperty(value = "telegram_info")
+    val telegramInfo: TelegramInfoDto
 
 )

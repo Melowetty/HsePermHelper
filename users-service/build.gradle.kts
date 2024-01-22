@@ -30,11 +30,15 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// [Database]
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 	/* [Internal dependencies] */
 	implementation(project(":languages-support-library"))
+	implementation(project(":mapper-library"))
+	// [Dependencies for tests]
+	testImplementation("org.mockito:mockito-core:5.9.0")
+	testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 dependencyManagement {

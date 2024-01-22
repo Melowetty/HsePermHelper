@@ -1,10 +1,15 @@
 package com.melowetty.hsepermhelper.usersservice.service.impl
 
-import com.melowetty.hsepermhelper.usersservice.dto.SettingsDto
 import com.melowetty.hsepermhelper.usersservice.dto.UserDto
+import com.melowetty.hsepermhelper.usersservice.exception.UserAlreadyExistsException
 import com.melowetty.hsepermhelper.usersservice.mapper.UserMapper
+import com.melowetty.hsepermhelper.usersservice.model.Settings
+import com.melowetty.hsepermhelper.usersservice.model.TelegramInfo
+import com.melowetty.hsepermhelper.usersservice.model.User
+import com.melowetty.hsepermhelper.usersservice.model.UserCreatingRequest
 import com.melowetty.hsepermhelper.usersservice.repository.UserRepository
 import com.melowetty.hsepermhelper.usersservice.service.UserService
+import com.melowetty.languagessupportlibrary.model.Language
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -30,14 +35,29 @@ class UserServiceImpl(
         return userRepository.findById(id).map { mapper.toDto(it) }
     }
 
-    override fun createUser(user: UserDto): Mono<Boolean> {
-        if(user.telegramInfo == null) return Mono.just(false)
-        return userRepository.existsByTelegramInfo_TelegramId(user.telegramInfo.telegramId).flatMap { isExists ->
-            if(isExists) Mono.just(false)
+    override fun createUser(userRequest: UserCreatingRequest): Mono<Void> {
+        return userRepository.existsByTelegramInfo_TelegramId(userRequest.telegramInfo.telegramId).flatMap { isExists ->
+            if(isExists) return@flatMap Mono.error(UserAlreadyExistsException("Пользователь с таким Telegram ID уже существует!"))
             else {
-                userRepository.save(mapper.toEntity(user)).map {
-                    it != null
+                val settings = userRequest.settings.mapKeys { it.key.lowercase() }
+                if (settings.containsKey("language").not()) {
+                    return@flatMap Mono.error(IllegalArgumentException("Не указано обязательное поле с языком!"))
                 }
+                val languageValue = settings["language"].toString()
+                val telegramInfo = userRequest.telegramInfo
+                val user = User(
+                    telegramInfo = TelegramInfo(
+                        telegramId = telegramInfo.telegramId,
+                        username = telegramInfo.username,
+                        firstName = telegramInfo.firstName,
+                        lastName = telegramInfo.lastName,
+                    ),
+                    settings = Settings(
+                        language = Language.fromString(languageValue) ?: Language.RUSSIAN
+                    )
+                )
+                userRepository.save(user)
+                Mono.empty()
             }
         }
     }
@@ -55,34 +75,19 @@ class UserServiceImpl(
     }
 
     override fun updateUser(user: UserDto): Mono<UserDto> {
-        if(user.telegramInfo == null) return Mono.empty()
-        return userRepository.findByTelegramInfo_TelegramId(user.telegramInfo.telegramId).flatMap { foundUser ->
-            userRepository.save(
-                mapper.toEntity(user.copy(id = foundUser.id))
-            ).map { mapper.toDto(it) }
-        }
+        return Mono.empty()
+//        return userRepository.findByTelegramInfo_TelegramId(user.telegramInfo.telegramId).flatMap { foundUser ->
+//            val
+//            userRepository.save(
+//
+//            ).map { mapper.toDto(it) }
+//        }
 
 //        val event = UsersChangedEvent(
 //            user = newUser,
 //            type = EventType.EDITED
 //        )
 //        eventPublisher.publishEvent(event)
-    }
-
-    override fun updateUserSettingsByTelegramId(telegramId: Long, settings: SettingsDto): Mono<UserDto> {
-        // todo добавить при изменении настроек пользователя запросы на другие сервисы
-        return Mono.empty()
-//        val user = getUserByTelegramId(telegramId) ?: return null
-//        val newUser = userRepository.save(
-//            mapper.toEntity(user.copy(settings = settings))
-//        ).map { mapper.toDto(it) }
-//
-////        val event = UsersChangedEvent(
-////            user = newUser,
-////            type = EventType.EDITED
-////        )
-////        eventPublisher.publishEvent(event)
-//        return newUser
     }
 
     override fun updateUserSettingsByTelegramId(telegramId: Long, settings: Map<String, Any?>): Mono<UserDto> {

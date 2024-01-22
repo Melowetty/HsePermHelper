@@ -2,6 +2,7 @@ package com.melowetty.hsepermhelper.usersservice.controller
 
 import com.melowetty.hsepermhelper.usersservice.dto.UserDto
 import com.melowetty.hsepermhelper.usersservice.exception.UserNotFoundException
+import com.melowetty.hsepermhelper.usersservice.model.UserCreatingRequest
 import com.melowetty.hsepermhelper.usersservice.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -28,12 +29,9 @@ class UsersController(
     @PostMapping(
         consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun createUser(
-        @RequestBody userDto: UserDto,
-    ): Mono<ResponseEntity<Void>> {
-        return userService.createUser(userDto).map { result ->
-            val status = if (result) HttpStatus.CREATED else HttpStatus.CONFLICT
-            ResponseEntity.status(status).build()
-        }
+        @RequestBody user: UserCreatingRequest,
+    ): Mono<Void> {
+        return userService.createUser(user)
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -45,6 +43,6 @@ class UsersController(
     fun updateUser(
         @RequestBody userDto: UserDto,
     ): Mono<UserDto> {
-        return userService.updateUser(userDto).switchIfEmpty(throw UserNotFoundException())
+        return userService.updateUser(userDto)
     }
 }

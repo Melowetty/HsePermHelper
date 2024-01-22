@@ -1,8 +1,8 @@
-package com.melowetty.hsepermhelper.usersservice.dto
+package com.melowetty.hsepermhelper.usersservice.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class TelegramInfoDto(
+data class TelegramInfoCreatingRequest(
     @JsonProperty(value = "telegram_id")
     val telegramId: Long,
     @JsonProperty(value = "first_name")

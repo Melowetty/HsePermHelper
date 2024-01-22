@@ -1,7 +1,7 @@
 package com.melowetty.hsepermhelper.usersservice.service
 
-import com.melowetty.hsepermhelper.usersservice.dto.SettingsDto
 import com.melowetty.hsepermhelper.usersservice.dto.UserDto
+import com.melowetty.hsepermhelper.usersservice.model.UserCreatingRequest
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.util.*
@@ -23,10 +23,9 @@ interface UserService {
 
     /**
      * Method creates user and return telegram ID when operation have success
-     * @param user User object
-     * @return true if user is created
+     * @param userRequest User object
      */
-    fun createUser(user: UserDto): Mono<Boolean>
+    fun createUser(userRequest: UserCreatingRequest): Mono<Void>
 
     /**
      * Returns list of all users
@@ -58,15 +57,6 @@ interface UserService {
      * @return new user object
      */
     fun updateUser(user: UserDto): Mono<UserDto>
-
-    /**
-     * Update user settings
-     *
-     * @param telegramId user telegram id
-     * @param settings new user settings
-     * @return new user object
-     */
-    fun updateUserSettingsByTelegramId(telegramId: Long, settings: SettingsDto): Mono<UserDto>
 
     /**
      * Update user settings by patch method
