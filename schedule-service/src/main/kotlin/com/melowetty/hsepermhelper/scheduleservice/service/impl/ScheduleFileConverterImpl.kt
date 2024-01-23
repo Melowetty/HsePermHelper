@@ -2,7 +2,7 @@ package com.melowetty.hsepermhelper.scheduleservice.service.impl
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.BaseScheduleDto
 import com.melowetty.hsepermhelper.scheduleservice.model.ScheduleType
-import com.melowetty.hsepermhelper.scheduleservice.service.BaseScheduleConverter
+import com.melowetty.hsepermhelper.scheduleservice.service.BaseScheduleParsingStrategy
 import com.melowetty.hsepermhelper.scheduleservice.service.ScheduleFileConverter
 import com.melowetty.hsepermhelper.scheduleservice.utils.ParserUtils
 import com.melowetty.hsepermhelper.scheduleservice.utils.ParserUtils.Companion.getWeekInfo
@@ -15,13 +15,13 @@ import java.util.*
 
 @Component
 class ScheduleFileConverterImpl(
-    private val schedulesConverter: List<BaseScheduleConverter>
+    private val scheduleParsingStrategiesInstances: List<BaseScheduleParsingStrategy>
 ): ScheduleFileConverter {
-    val converters: MutableMap<ScheduleType, BaseScheduleConverter> = mutableMapOf()
+    val scheduleParsingStrategies: MutableMap<ScheduleType, BaseScheduleParsingStrategy> = mutableMapOf()
     init {
-        schedulesConverter.forEach { converter ->
-            converter.getScheduleTypes().forEach {
-                converters[it] = converter
+        scheduleParsingStrategiesInstances.forEach { strategy ->
+            strategy.getCompatibleScheduleTypes().forEach {
+                scheduleParsingStrategies[it] = strategy
             }
         }
     }
@@ -35,8 +35,8 @@ class ScheduleFileConverterImpl(
         if (scheduleInfo.scheduleStartDate == null || scheduleInfo.scheduleEndDate == null) {
             return null
         }
-        return converters[scheduleInfo.scheduleType]?.getSchedule(uuid, workbook, scheduleInfo)
-            ?: throw IllegalArgumentException("Конвертер для такого типа расписания не найден!")
+        return scheduleParsingStrategies[scheduleInfo.scheduleType]?.parseSchedule(uuid, workbook, scheduleInfo)
+            ?: throw IllegalArgumentException("Парсер для такого типа расписания не найден!")
     }
 
     private fun getWorkbook(inputStream: InputStream): Workbook {

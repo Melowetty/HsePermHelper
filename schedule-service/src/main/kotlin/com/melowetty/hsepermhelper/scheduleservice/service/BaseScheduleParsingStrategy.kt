@@ -6,7 +6,7 @@ import com.melowetty.hsepermhelper.scheduleservice.utils.ParserUtils
 import org.apache.poi.ss.usermodel.Workbook
 import java.util.*
 
-interface BaseScheduleConverter {
-    fun getSchedule(uuid: UUID, workbook: Workbook, scheduleInfo: ParserUtils.ParsedScheduleInfo): BaseScheduleDto?
-    fun getScheduleTypes(): List<ScheduleType>
+interface BaseScheduleParsingStrategy {
+    fun parseSchedule(uuid: UUID, workbook: Workbook, scheduleInfo: ParserUtils.ParsedScheduleInfo): BaseScheduleDto?
+    fun getCompatibleScheduleTypes(): List<ScheduleType>
 }

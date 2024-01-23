@@ -2,18 +2,16 @@ package com.melowetty.hsepermhelper.scheduleservice.service.impl
 
 import com.melowetty.hsepermhelper.scheduleservice.dto.*
 import com.melowetty.hsepermhelper.scheduleservice.model.ScheduleType
-import com.melowetty.hsepermhelper.scheduleservice.service.BaseScheduleConverter
+import com.melowetty.hsepermhelper.scheduleservice.service.BaseScheduleParsingStrategy
 import com.melowetty.hsepermhelper.scheduleservice.utils.ParserUtils
 import org.apache.poi.ss.usermodel.Workbook
 import org.springframework.stereotype.Component
 import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Component
-class QuarterScheduleConverter: BaseScheduleConverter {
-    override fun getSchedule(uuid: UUID, workbook: Workbook, scheduleInfo: ParserUtils.ParsedScheduleInfo): BaseScheduleDto? {
+class QuarterScheduleParsingStrategy: BaseScheduleParsingStrategy {
+    override fun parseSchedule(uuid: UUID, workbook: Workbook, scheduleInfo: ParserUtils.ParsedScheduleInfo): BaseScheduleDto? {
         try {
             val parsedLessons = mutableListOf<BaseLessonDto>()
             for (i in 0 until workbook.numberOfSheets) {
@@ -80,7 +78,7 @@ class QuarterScheduleConverter: BaseScheduleConverter {
         }
     }
 
-    override fun getScheduleTypes(): List<ScheduleType> {
+    override fun getCompatibleScheduleTypes(): List<ScheduleType> {
         return listOf(ScheduleType.QUARTER_SCHEDULE)
     }
 
